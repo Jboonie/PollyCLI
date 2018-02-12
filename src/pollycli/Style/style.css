@@ -1,0 +1,56 @@
+/*
+ * Empty Stylesheet file.
+ */
+
+.mainFxmlClass {
+
+    
+    
+}
+.settingsAnchorPane{
+    -fx-spacing: 10;
+}
+
+.settingsCategorySelector{
+    -fx-border-color: black;
+    -fx-background-color: transparent;
+    -fx-hbar-policy: never;
+    -fx-alignment: CENTER;
+}
+
+.settingsCategorySelectorVBOX{
+    -fx-alignment: TOP_CENTER;
+    -fx-padding: 5;
+    -fx-spacing: 10;
+}
+
+.settingsCategorySelectorButtons{
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-border-style: none;
+}
+
+.settingsOptionsPane{
+    -fx-hbar-policy: never;
+}
+
+.settingsGridPane{
+    -fx-alignment: TOP_CENTER;
+    -fx-spacing: 10;
+    
+}
+
+.fileDisplayVBox{
+    -fx-spacing: 3;
+}
+
+.fileDisplayItem{
+    -fx-border-radius: 5;
+    -fx-border-color: red;
+    -fx-border-width: 2;
+}
+.fileDisplayItemProcessed{
+    -fx-border-radius: 5;
+    -fx-border-color: green;
+    -fx-border-width: 2;
+}

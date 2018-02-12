@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+The MIT License
+
+Copyright 2018 Jacob Boone.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+-->
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="422.0" prefWidth="427.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pollycli.Controllers.MainPageController">
+   <children>
+      <TextField fx:id="textField" layoutX="12.0" layoutY="34.0" prefHeight="25.0" prefWidth="402.0" />
+      <Button fx:id="loadButton" layoutX="194.0" layoutY="67.0" mnemonicParsing="false" onAction="#loadDirectory" text="Load" />
+      <Button fx:id="convertButton" layoutX="186.0" layoutY="388.0" mnemonicParsing="false" onAction="#convertFiles" text="Convert" />
+      <TextArea fx:id="textArea" disable="true" layoutX="10.0" layoutY="99.0" prefHeight="282.0" prefWidth="408.0" />
+      <MenuBar layoutY="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Settings">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#launchSettings" text="Configure" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#launchAbout" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <ScrollPane fx:id="testScrollPane" fitToWidth="true" hbarPolicy="NEVER" layoutX="9.0" layoutY="105.0" prefHeight="270.0" prefWidth="408.0">
+         <content>
+            <VBox fx:id="testVBox" prefHeight="261.0" prefWidth="403.0" />
+         </content>
+      </ScrollPane>
+      <ProgressBar fx:id="progressBar" layoutX="14.0" layoutY="388.0" prefHeight="25.0" prefWidth="164.0" progress="0.0" visible="false" />
+   </children>
+</AnchorPane>
