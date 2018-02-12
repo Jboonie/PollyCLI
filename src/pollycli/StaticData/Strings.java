@@ -46,8 +46,6 @@ public class Strings {
     public static String SETTINGS_STATEMENT_PART05 = "STATEMENT_PART05";
     public static String SETTINGS_STATEMENT_PART06 = "STATEMENT_PART06";
     
-    
-    //public static String SETTINGS_STATEMENT_INITIAL_CONTENTS = "cmd /C start cmd.exe /K ";
     public static String SETTINGS_STATEMENT_INITIAL_CONTENTS = "cmd.exe /C ";
     public static String SETTINGS_STATEMENT_PART01_CONTENTS = "\"";
     public static String SETTINGS_STATEMENT_PART02_CONTENTS = " polly synthesize-speech --output-format=\"";
@@ -66,13 +64,22 @@ public class Strings {
     //PollyStatement Stuff
     public static String[] TRACKED_STATEMENT_PROPERTY_TARGETS = {SETTINGS_OUTPUT, SETTINGS_AWSCMD, SETTINGS_NUMREQS, SETTINGS_SPEAKER};
     
+    //Narration Stuff
+    public static String[] NARRATORS = {"Nicole", "Russell", "Amy", "Brian", "Emma", "Joanna", "Matthew", "Salli", "Justin",
+            "Kendra", "Joey", "Kimberly", "Ivy"};
+    
+    //File Type Stuff
+    public static String[] FILE_TYPES = {"mp3"};
+    
+    public Charset UTF = Charset.defaultCharset();
+    
+    public Strings() {
+    }    
+    
+    //REFERENCE MATERIAL
     /*
     public static String COMMAND_ORDER = "SETTINGS_STATEMENT_INITIAL_CONTENTS + SETTINGS_STATEMENT_PART01_CONTENTS + SETTINGS_AWSCMD (CONTENTS OF) +"
             + " SETTINGS_STATEMENT_PART02_CONTENTS + SETTINGS_OUTPUT(CONTENTS OF) + SETTINGS_STATEMENT_PART03_CONTENTS + TEXT + " +
             "SETTINGS_STATEMENT_PART04_CONTENTS + VOICE + SETTINGS_STATEMENT_PART05_CONTENTS + FILE DATA";
     */
-    public Charset UTF = Charset.defaultCharset();
-    
-    public Strings() {
-    }    
 }
