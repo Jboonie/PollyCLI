@@ -23,6 +23,9 @@
  */
 package pollycli.StaticData;
 
+import java.util.ResourceBundle;
+import javafx.scene.image.Image;
+
 /**
  *
  * @author Jacob Boone
@@ -35,8 +38,20 @@ public class Paths {
     public static String SETTINGSFXML = "/pollycli/FXML/SettingsPage.fxml";
     public static String AWSHELPFXML = "/pollycli/FXML/AWSHelpPage.fxml";
     
+    //RESOURCES
+    /*
+    NEEDS TO BE CREDITED WHEN THE ABOUT PAGE IS BUILT
+    <div>Icons made by <a href="http://www.freepik.com" 
+    title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" 
+    title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 
+    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+    */
+    private static String PNG_BIRD = "/pollycli/Resources/origami-bird.png";
+    public static Image IMAGE_BIRD = new Image(PNG_BIRD);
+    
     //BUNDLES
     public static String LANG_EN = "pollycli.Bundles.LangBundle_en";
+    public static ResourceBundle ENG_BUNDLE = ResourceBundle.getBundle(Paths.LANG_EN);
     
     //Client Side Properties
     public static String CLIENT_PROPERTIES = "config.properties";

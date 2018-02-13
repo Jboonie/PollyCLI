@@ -71,12 +71,8 @@ public class PollyStatement {
         returnValue += convertExtension(outputFile, output.getData());
         
         returnValue += Strings.SETTINGS_STATEMENT_PART06_CONTENTS;
-        /*
-    public static String COMMAND_ORDER = "SETTINGS_STATEMENT_INITIAL_CONTENTS + SETTINGS_STATEMENT_PART01_CONTENTS + SETTINGS_AWSCMD (CONTENTS OF) +"
-            + " SETTINGS_STATEMENT_PART02_CONTENTS + SETTINGS_OUTPUT(CONTENTS OF) + SETTINGS_STATEMENT_PART03_CONTENTS + TEXT + " +
-            "SETTINGS_STATEMENT_PART04_CONTENTS + VOICE + SETTINGS_STATEMENT_PART05_CONTENTS + FILE DATA";
-    */
-        System.out.println("PollySatatement: " + returnValue);
+
+//        System.out.println("PollySatatement: " + returnValue);
         return returnValue;
     }
     
@@ -107,7 +103,6 @@ public class PollyStatement {
     }
 
     private boolean isVerified(String[] trackedStrings, PropertyPackage incomingPack){
-        boolean containsAllValues = true;
         for(int i = 0; i < trackedStrings.length; i++){
             if(!incomingPack.contains(trackedStrings[i])){
                 return false;

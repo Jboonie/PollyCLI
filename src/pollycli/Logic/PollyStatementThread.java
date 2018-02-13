@@ -70,7 +70,7 @@ public class PollyStatementThread extends Thread{
                         progressBar.setProgress((double) i / (double) directoryContents.size());
                         if(i != 0){
                             if((i % 60) == 0){
-                            System.out.println("Sleeping: " + i + " % 60 is " + (i % 60));
+//                            System.out.println("Sleeping: " + i + " % 60 is " + (i % 60));
                             Thread.sleep(2000);
                             }
                         }

@@ -25,18 +25,10 @@ package pollycli.Controllers;
 
 import pollycli.DataStructures.SettingsCombo;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -50,12 +42,6 @@ import pollycli.DataStructures.PropertyPair;
 import pollycli.Logic.PropertyManager;
 import pollycli.StaticData.Paths;
 import pollycli.StaticData.Strings;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
  *
@@ -118,41 +104,7 @@ public class SettingsPageController implements Initializable{
         Button button = (Button) event.getSource();
         showPane(button);
     }
-    
-    @FXML
-    private void saveSettings(ActionEvent event){
-        OutputStream out = null;
-        try {
-            /*
-            awsCMDDir = properties.getProperty("AWSDirectory");
-            pollyInitialStatement = properties.getProperty("AWSPrimaryStatement");
-            pollySecondaryStatement = properties.getProperty("AWSSecondaryStatement");
-            
-            private String awsCMDDir = "\"C:\\Users\\Stacker\\AppData\\Roaming\\Python\\Python36\\Scripts\\aws.cmd";
-            private String pollyInitialStatement = " polly synthesize-speech --output-format=\"mp3\" --text=\"";
-            private String pollySecondaryStatement = "\" --voice-id=\"Salli\" ";
-            */  
-            properties.setProperty("AWSDirectory", "\"C:\\Users\\Stacker\\AppData\\Roaming\\Python\\Python36\\Scripts\\aws.cmd");
-            properties.setProperty("AWSPrimaryStatement", " polly synthesize-speech --output-format=\"mp3\" --text=\"");
-            properties.setProperty("AWSSecondaryStatement", "\" --voice-id=\"Mizuki\" ");
-            out = new FileOutputStream(propertiesFile);
-            try {
-                properties.store(out, "");
-            } catch (IOException ex) {
-                Logger.getLogger(SettingsPageController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(SettingsPageController.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                out.close();
-            } catch (IOException ex) {
-                Logger.getLogger(SettingsPageController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
-    
+
     private void showPane(Button b){
         for(int i = 0; i < settingsCombo.size(); i++){
             if(settingsCombo.get(i).getButton().getId().toString().equals(b.getId().toString())){
@@ -235,21 +187,12 @@ public class SettingsPageController implements Initializable{
         propertyManager = new PropertyManager(Paths.CLIENT_PROPERTIES);
     }
     
-    private void loadChoiceBoxes(){            
-        NarrationChoiceBox.getItems().add("Nicole");
-        NarrationChoiceBox.getItems().add("Russell");
-        NarrationChoiceBox.getItems().add("Amy");
-        NarrationChoiceBox.getItems().add("Brian");
-        NarrationChoiceBox.getItems().add("Emma");
-        NarrationChoiceBox.getItems().add("Joanna");
-        NarrationChoiceBox.getItems().add("Matthew");
-        NarrationChoiceBox.getItems().add("Salli");
-        NarrationChoiceBox.getItems().add("Justin");
-        NarrationChoiceBox.getItems().add("Kendra");
-        NarrationChoiceBox.getItems().add("Joey");
-        NarrationChoiceBox.getItems().add("Kimberly");
-        NarrationChoiceBox.getItems().add("Ivy");
-        
-        FileTypeChoiceBox.getItems().add("mp3");
+    private void loadChoiceBoxes(){     
+        for(String s : Strings.NARRATORS){
+            NarrationChoiceBox.getItems().add(s);
+        }
+        for(String s : Strings.FILE_TYPES){
+            FileTypeChoiceBox.getItems().add(s);
+        }
     }
 }

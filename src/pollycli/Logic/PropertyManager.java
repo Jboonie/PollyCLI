@@ -119,14 +119,6 @@ public class PropertyManager {
         }
     }
     
-    public void removeProperty(PropertyPair pair){
-        for(int i = 0; i < properties.size(); i++){
-            if(properties.get(i).getTarget().equals(pair.getTarget())){
-                properties.remove(properties.get(i));
-            }
-        }
-    }
-    
     public void setPackage(PropertyPackage newPack){
         properties = newPack;
     }
