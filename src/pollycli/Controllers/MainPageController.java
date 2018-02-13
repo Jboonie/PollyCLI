@@ -108,10 +108,7 @@ public class MainPageController implements Initializable {
     @FXML
     private void launchSettings(ActionEvent event){
         try {
-            
-            ResourceBundle resources = ResourceBundle.getBundle(Paths.LANG_EN);
-            String path = Paths.SETTINGSFXML;
-            FXMLLoader addPartLoader = new FXMLLoader(getClass().getResource(path), resources);
+            FXMLLoader addPartLoader = new FXMLLoader(getClass().getResource(Paths.SETTINGSFXML), Paths.ENG_BUNDLE);
             Parent root = addPartLoader.load();
             Stage newStage = new Stage(); 
             

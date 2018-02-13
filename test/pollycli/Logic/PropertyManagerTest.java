@@ -26,6 +26,7 @@ package pollycli.Logic;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -103,19 +104,6 @@ public class PropertyManagerTest {
         
         assertTrue(pack.get(1).getData().equals("2"));
         assertTrue(pack.get(1).getTarget().equals("1"));
-    }
-
-    /**
-     * Test of removeProperty method, of class PropertyManager.
-     */
-    @Test
-    public void testRemoveProperty() {
-        System.out.println("removeProperty");
-        PropertyManager instance = new PropertyManager(file.getAbsolutePath());
-        instance.readProperties();
-        instance.removeProperty(new PropertyPair("NARRATOR", "Nicole"));
-        PropertyPackage pack = instance.getProperties();
-        assertEquals(pack.size(), 0);
     }
 
     /**

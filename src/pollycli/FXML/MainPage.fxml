@@ -30,11 +30,11 @@ THE SOFTWARE.
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="422.0" prefWidth="427.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pollycli.Controllers.MainPageController">
+<AnchorPane id="AnchorPane" prefHeight="422.0" prefWidth="427.0" stylesheets="@../Style/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pollycli.Controllers.MainPageController">
    <children>
       <TextField fx:id="textField" layoutX="12.0" layoutY="34.0" prefHeight="25.0" prefWidth="402.0" />
-      <Button fx:id="loadButton" layoutX="194.0" layoutY="67.0" mnemonicParsing="false" onAction="#loadDirectory" text="Load" />
-      <Button fx:id="convertButton" layoutX="186.0" layoutY="388.0" mnemonicParsing="false" onAction="#convertFiles" text="Convert" />
+      <Button id="button" fx:id="loadButton" layoutX="194.0" layoutY="67.0" mnemonicParsing="false" onAction="#loadDirectory" stylesheets="@../Style/style.css" text="%mainLoadButton" />
+      <Button fx:id="convertButton" layoutX="186.0" layoutY="388.0" mnemonicParsing="false" onAction="#convertFiles" text="%mainConvertButton" />
       <TextArea fx:id="textArea" disable="true" layoutX="10.0" layoutY="99.0" prefHeight="282.0" prefWidth="408.0" />
       <MenuBar layoutY="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
