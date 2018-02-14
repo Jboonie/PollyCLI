@@ -32,13 +32,13 @@ import java.util.ArrayList;
  */
 public class Strings {
 
-    private static String VERSION = "0.1";
-    private static String APPNAME = "PollyCLI";
-    private static String TITLEBAR = APPNAME + " " + VERSION;
-    public static String MainPageTitle = TITLEBAR;
-    public static String SettingsPageTitle = TITLEBAR + " - Settings";
-    public static String SettingsAWSHelpTitle = TITLEBAR + " - AWS Configuration Help";
-    public static String AboutPageTitle = TITLEBAR + " - About";
+    private static final String VERSION = "0.2";
+    private static final String APPNAME = "PollyCLI";
+    private static final String TITLEBAR = APPNAME + " " + VERSION;
+    public static final String MainPageTitle = TITLEBAR;
+    public static final String SettingsPageTitle = TITLEBAR + " - Settings";
+    public static final String SettingsAWSHelpTitle = TITLEBAR + " - AWS Configuration Help";
+    public static final String AboutPageTitle = TITLEBAR + " - About";
     
     public static String SETTINGS_OUTPUT = "OUTPUT";
     public static String SETTINGS_AWSCMD = "AWSDIRECTORY";

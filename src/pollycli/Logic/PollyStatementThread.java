@@ -29,7 +29,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.layout.VBox;
 import pollycli.DataStructures.FileStatusTracker;
 import pollycli.DataStructures.PollyStatement;
 import pollycli.DataStructures.PropertyPackage;
