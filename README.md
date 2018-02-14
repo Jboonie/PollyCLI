@@ -7,7 +7,10 @@ The application is in its early stages and is not considered stable by any means
 
 Why would you want to use this?  Well, I have used this application quite extensively to convert multiple large scale (2 - 3 million) character web novels into Polly chunks so that I can enjoy audio books on the go.  I will be releasing some of the other tools I use to gather and prepare web text for conversion over time once this application is more stable.
 
-![Main Screen](https://i.imgur.com/Gi2rcgl.png) ![Output](https://i.imgur.com/iD1k4J1.png)
+Heres what a converted directory looks like:
+![Main Screen](https://i.imgur.com/LWpGeSH.png) 
+Here is the output that you would receive in the same directory:
+![Output](https://i.imgur.com/2fmBoSN.png)
 
 
 
