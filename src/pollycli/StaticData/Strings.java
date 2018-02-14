@@ -33,6 +33,7 @@ import java.util.ArrayList;
 public class Strings {
 
     public static String MainPageTitle = "PollyCLI 0.1";
+    public static String SettingsPageTitle = "PollyCLI 0.1 - Settings";
     
     public static String SETTINGS_OUTPUT = "OUTPUT";
     public static String SETTINGS_AWSCMD = "AWSDIRECTORY";

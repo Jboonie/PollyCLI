@@ -115,7 +115,8 @@ public class MainPageController implements Initializable {
             Scene scene = new Scene(root);
             
             newStage.setScene(scene);
-            
+            newStage.getIcons().add(Paths.IMAGE_BIRD);
+            newStage.setTitle(Strings.SettingsPageTitle);
             newStage.show();
         } catch (IOException ex) {
             Logger.getLogger(MainPageController.class.getName()).log(Level.SEVERE, null, ex);
