@@ -25,19 +25,26 @@ package pollycli.Controllers;
 
 import pollycli.DataStructures.SettingsCombo;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import pollycli.DataStructures.PropertyPackage;
 import pollycli.DataStructures.PropertyPair;
 import pollycli.Logic.PropertyManager;
@@ -171,6 +178,24 @@ public class SettingsPageController implements Initializable{
                 }
                 propertyManager.writeProperties();
             }
+    }
+    
+    @FXML
+    public void awsHelp(ActionEvent event){
+        try {
+            FXMLLoader addPartLoader = new FXMLLoader(getClass().getResource(Paths.AWSHELPFXML), Paths.ENG_BUNDLE);
+            Parent root = addPartLoader.load();
+            Stage newStage = new Stage(); 
+            
+            Scene scene = new Scene(root);
+            
+            newStage.setScene(scene);
+            newStage.getIcons().add(Paths.IMAGE_BIRD);
+            newStage.setTitle(Strings.SettingsAWSHelpTitle);
+            newStage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(MainPageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     

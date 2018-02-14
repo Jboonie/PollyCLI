@@ -147,7 +147,7 @@ THE SOFTWARE.
                         <Insets right="10.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="AWSAWSHelpButton" minWidth="-Infinity" mnemonicParsing="false" prefWidth="55.0" text="%settingsAWSPaneAWSHelp" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                  <Button fx:id="AWSAWSHelpButton" minWidth="-Infinity" mnemonicParsing="false" onAction="#awsHelp" prefWidth="55.0" text="%settingsAWSPaneAWSHelp" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                      <GridPane.margin>
                         <Insets right="10.0" />
                      </GridPane.margin>

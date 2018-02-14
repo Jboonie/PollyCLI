@@ -32,8 +32,13 @@ import java.util.ArrayList;
  */
 public class Strings {
 
-    public static String MainPageTitle = "PollyCLI 0.1";
-    public static String SettingsPageTitle = "PollyCLI 0.1 - Settings";
+    private static String VERSION = "0.1";
+    private static String APPNAME = "PollyCLI";
+    private static String TITLEBAR = APPNAME + " " + VERSION;
+    public static String MainPageTitle = TITLEBAR;
+    public static String SettingsPageTitle = TITLEBAR + " - Settings";
+    public static String SettingsAWSHelpTitle = TITLEBAR + " - AWS Configuration Help";
+    public static String AboutPageTitle = TITLEBAR + " - About";
     
     public static String SETTINGS_OUTPUT = "OUTPUT";
     public static String SETTINGS_AWSCMD = "AWSDIRECTORY";

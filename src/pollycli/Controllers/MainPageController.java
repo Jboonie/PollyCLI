@@ -126,15 +126,15 @@ public class MainPageController implements Initializable {
     @FXML 
     private void launchAbout(ActionEvent event){
         try {
-            String path = Paths.ABOUTFXML;
-            FXMLLoader addPartLoader = new FXMLLoader(getClass().getResource(path));
+            FXMLLoader addPartLoader = new FXMLLoader(getClass().getResource(Paths.ABOUTFXML), Paths.ENG_BUNDLE);
             Parent root = addPartLoader.load();
             Stage newStage = new Stage(); 
             
             Scene scene = new Scene(root);
             
             newStage.setScene(scene);
-            
+            newStage.getIcons().add(Paths.IMAGE_BIRD);
+            newStage.setTitle(Strings.AboutPageTitle);
             newStage.show();
         } catch (IOException ex) {
             Logger.getLogger(MainPageController.class.getName()).log(Level.SEVERE, null, ex);
