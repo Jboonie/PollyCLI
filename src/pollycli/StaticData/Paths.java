@@ -46,7 +46,7 @@ public class Paths {
     title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 
     title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
     */
-    private static String PNG_BIRD = "/pollycli/Resources/origami-bird.png";
+    private static String PNG_BIRD = "/pollycli/Resources/bird.png";
     public static Image IMAGE_BIRD = new Image(PNG_BIRD);
     
     //BUNDLES
