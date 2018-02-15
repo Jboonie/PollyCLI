@@ -79,6 +79,15 @@ public class Strings {
     
     public Charset UTF = Charset.defaultCharset();
     
+    //PROJECT URL(S) & HELP FILE URL(S)
+    public static final String PROJECT_INSTALL_AWS_CLI_URL = "https://github.com/Jboonie/PollyCLI/wiki/03-Installing-Amazon-CLI";
+    public static final String PROJECT_CONFIGURE_AWS_CLI_URL = "https://github.com/Jboonie/PollyCLI/wiki/04-Configuring-Amazon-CLI";
+    public static final String PROJECT_WEBSITE_URL = "https://github.com/Jboonie/PollyCLI";
+    public static final String PROJECT_GETTING_STARTED_URL = "https://github.com/Jboonie/PollyCLI/wiki/02-Getting-Started";
+    public static final String PROJECT_FINDING_AWS_CLI_URL = "https://github.com/Jboonie/PollyCLI/wiki/05-Finding-the-Amazon-CLI-Install-Directory";
+    public static final String PROJECT_CONFIGURING_POLLY_CLI_URL = "https://github.com/Jboonie/PollyCLI/wiki/06-Configuring-PollyCLI";
+    
+    
     public Strings() {
     }    
     

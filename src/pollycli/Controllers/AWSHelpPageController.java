@@ -25,7 +25,14 @@ package pollycli.Controllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tab;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import pollycli.StaticData.Paths;
+import pollycli.StaticData.Strings;
 
 /**
  * FXML Controller class
@@ -34,12 +41,49 @@ import javafx.fxml.Initializable;
  */
 public class AWSHelpPageController implements Initializable {
 
+//    @FXML
+//    private ScrollPane testingScrollPane;
+//    @FXML
+//    private Tab testTab;
+    @FXML
+    private ScrollPane AWSHelpGettingStarted;
+    @FXML
+    private ScrollPane AWSHelpCLIInstallScrollPane;
+    @FXML
+    private ScrollPane AWSHelpConfigureAWSCLI;
+    @FXML
+    private ScrollPane AWSHelpFindAWSCLI;
+    @FXML
+    private ScrollPane AWSHelpConfigurePollyCLI;
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        WebView gettingStartedBrowser = new WebView();
+        WebView CLIInstallBrowser = new WebView();
+        WebView configureCLIBrowser = new WebView();
+        WebView findCLIBrowser = new WebView();
+        WebView configurePollyBrowser = new WebView();
+        
+        WebEngine gettingStartedEngine = gettingStartedBrowser.getEngine();
+        WebEngine CLIInstallEngine = CLIInstallBrowser.getEngine();
+        WebEngine configureCLIEngine = configureCLIBrowser.getEngine();
+        WebEngine findCLIEngine = findCLIBrowser.getEngine();
+        WebEngine configurePollyEngine = configurePollyBrowser.getEngine();
+        
+        gettingStartedEngine.load(Strings.PROJECT_GETTING_STARTED_URL);
+        CLIInstallEngine.load(Strings.PROJECT_INSTALL_AWS_CLI_URL);
+        configureCLIEngine.load(Strings.PROJECT_CONFIGURE_AWS_CLI_URL);
+        findCLIEngine.load(Strings.PROJECT_FINDING_AWS_CLI_URL);
+        configurePollyEngine.load(Strings.PROJECT_CONFIGURING_POLLY_CLI_URL);
+        
+        AWSHelpGettingStarted.setContent(gettingStartedBrowser);
+        AWSHelpCLIInstallScrollPane.setContent(CLIInstallBrowser);
+        AWSHelpConfigureAWSCLI.setContent(configureCLIBrowser);
+        AWSHelpFindAWSCLI.setContent(findCLIBrowser);
+        AWSHelpConfigurePollyCLI.setContent(configurePollyBrowser);
     }    
     
 }
