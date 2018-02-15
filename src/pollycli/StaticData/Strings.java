@@ -75,7 +75,7 @@ public class Strings {
             "Kendra", "Joey", "Kimberly", "Ivy"};
     
     //File Type Stuff
-    public static String[] FILE_TYPES = {"mp3"};
+    public static String[] FILE_TYPES = {"mp3", "ogg_vorbis", "pcm"};
     
     public Charset UTF = Charset.defaultCharset();
     
