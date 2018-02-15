@@ -9,7 +9,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pollycli.Controllers.AWSHelpPageController">
+<AnchorPane id="AnchorPane" prefHeight="900.0" prefWidth="1200.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pollycli.Controllers.AWSHelpPageController">
     <stylesheets>
         <URL value="@/pollycli/Style/style.css" />
     </stylesheets>
@@ -18,7 +18,7 @@
         <tabs>
             <Tab text="Getting Started">
                <content>
-                  <ScrollPane fx:id="AWSHelpGettingStarted" prefHeight="200.0" prefWidth="200.0" />
+                  <ScrollPane fx:id="AWSHelpGettingStarted" fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" />
                </content>
             </Tab>
           <Tab text="Installing AWS CLI">
@@ -38,18 +38,7 @@
             </Tab>
             <Tab text="Configuring PollyCLI">
                <content>
-                  <ScrollPane fx:id="AWSHelpConfigurePollyCLI" fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
-                     <content>
-                        <TextFlow prefHeight="200.0" prefWidth="200.0">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="%awsHelpConfiguringPollyCLI" />
-                           </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </TextFlow>
-                     </content>
-                  </ScrollPane>
+                  <ScrollPane fx:id="AWSHelpConfigurePollyCLI" fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" />
                </content>
             </Tab>
         </tabs>
