@@ -1,5 +1,5 @@
 # PollyCLI
-## An Easy to Use GUI for Amazon Polly.
+### An Easy to Use GUI for Amazon Polly.
 
 This application is designed to allow users to quickly convert a directory of text files into audio files using the AWS Polly command line API.  In order to utilize this application you will need the [AWS CLI](https://docs.aws.amazon.com/polly/latest/dg/getting-started-cli.html "AWS CLI"), Python, Java, and properly sized text files. You can read more about 
 [Polly's limitations here.](https://docs.aws.amazon.com/polly/latest/dg/limits.html)
