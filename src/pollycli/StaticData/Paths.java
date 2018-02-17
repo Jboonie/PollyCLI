@@ -43,8 +43,19 @@ public class Paths {
     public static Image IMAGE_BIRD = new Image(PNG_BIRD);
     
     //BUNDLES
+    
+        //ENGLISH
     public static String LANG_EN = "pollycli.Bundles.LangBundle_en";
     public static ResourceBundle ENG_BUNDLE = ResourceBundle.getBundle(Paths.LANG_EN);
+    
+        //SPANISH
+    public static String LANG_ES = "pollycli.Bundles.LangBundle_es";
+    public static ResourceBundle ES_BUNDLE = ResourceBundle.getBundle(Paths.LANG_ES);
+    
+        //FRENCH
+    public static String LANG_FR = "pollycli.Bundles.LangBundle_fr";
+    public static ResourceBundle FR_BUNDLE = ResourceBundle.getBundle(Paths.LANG_FR);
+    
     
     //Client Side Properties
     public static String CLIENT_PROPERTIES = "config.properties";
