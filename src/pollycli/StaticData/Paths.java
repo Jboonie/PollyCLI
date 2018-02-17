@@ -23,8 +23,11 @@
  */
 package pollycli.StaticData;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.scene.image.Image;
+import pollycli.DataStructures.SupportedLanguage;
 
 /**
  *
@@ -45,17 +48,25 @@ public class Paths {
     //BUNDLES
     
         //ENGLISH
+    private static String LANG_EN_NAME = "English";
     public static String LANG_EN = "pollycli.Bundles.LangBundle_en";
     public static ResourceBundle ENG_BUNDLE = ResourceBundle.getBundle(Paths.LANG_EN);
+    private static SupportedLanguage LANG_SUPPORTED_EN = new SupportedLanguage(LANG_EN_NAME, ENG_BUNDLE);
     
         //SPANISH
+    private static String LANG_ES_NAME = "Spanish";
     public static String LANG_ES = "pollycli.Bundles.LangBundle_es";
     public static ResourceBundle ES_BUNDLE = ResourceBundle.getBundle(Paths.LANG_ES);
+    private static SupportedLanguage LANG_SUPPORTED_ES = new SupportedLanguage(LANG_ES_NAME, ES_BUNDLE);
     
         //FRENCH
+    private static String LANG_FR_NAME = "French";
     public static String LANG_FR = "pollycli.Bundles.LangBundle_fr";
     public static ResourceBundle FR_BUNDLE = ResourceBundle.getBundle(Paths.LANG_FR);
+    private static SupportedLanguage LANG_SUPPORTED_FR = new SupportedLanguage(LANG_FR_NAME, FR_BUNDLE);
     
+    //TO ADD NEW LANGUAGE CREATE PROP FILE AND THEN ADD TO BUNDLES & THIS ARRAY
+    public static SupportedLanguage[] SUPPORTED_LANGUAGES = {LANG_SUPPORTED_EN, LANG_SUPPORTED_ES, LANG_SUPPORTED_FR};
     
     //Client Side Properties
     public static String CLIENT_PROPERTIES = "config.properties";

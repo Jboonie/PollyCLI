@@ -30,7 +30,7 @@ THE SOFTWARE.
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="422.0" prefWidth="427.0" stylesheets="@../Style/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pollycli.Controllers.MainPageController">
+<AnchorPane id="AnchorPane" fx:id="mainPane" prefHeight="422.0" prefWidth="427.0" stylesheets="@../Style/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pollycli.Controllers.MainPageController">
    <children>
       <TextField fx:id="textField" layoutX="12.0" layoutY="34.0" prefHeight="25.0" prefWidth="402.0" />
       <Button id="button" fx:id="loadButton" layoutX="194.0" layoutY="67.0" mnemonicParsing="false" onAction="#loadDirectory" stylesheets="@../Style/style.css" text="%mainLoadButton" />
@@ -47,6 +47,7 @@ THE SOFTWARE.
               <MenuItem mnemonicParsing="false" onAction="#launchAbout" text="About" />
             </items>
           </Menu>
+            <Menu fx:id="mainLangMenu" mnemonicParsing="false" text="Language" />
         </menus>
       </MenuBar>
       <ScrollPane fx:id="testScrollPane" fitToWidth="true" hbarPolicy="NEVER" layoutX="9.0" layoutY="105.0" prefHeight="270.0" prefWidth="408.0" styleClass="fileDisplayScrollPane" stylesheets="@../Style/style.css">

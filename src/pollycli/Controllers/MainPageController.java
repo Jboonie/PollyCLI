@@ -36,14 +36,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import pollycli.DataStructures.FileDisplayItem;
 import pollycli.DataStructures.FileStatusTracker;
 import pollycli.DataStructures.PropertyPackage;
+import pollycli.DataStructures.SupportedLanguage;
 import pollycli.Logic.PollyStatementThread;
 import pollycli.Logic.PropertyManager;
 import pollycli.StaticData.Paths;
@@ -60,6 +64,7 @@ public class MainPageController implements Initializable {
     private ArrayList<File> directoryContents;
     private PropertyPackage propertyPackage;
     private ArrayList<FileStatusTracker> targetFiles;
+    private ResourceBundle activeLanguage;
     
     @FXML
     private TextField textField;
@@ -67,6 +72,10 @@ public class MainPageController implements Initializable {
     private VBox outputDisplayVBox;
     @FXML
     private ProgressBar progressBar;
+    @FXML
+    private Menu mainLangMenu;
+    @FXML
+    private AnchorPane mainPane;
     
     //ATTACHED TO BROWSE BUTTON
     @FXML
@@ -107,7 +116,8 @@ public class MainPageController implements Initializable {
     @FXML
     private void launchSettings(ActionEvent event){
         try {
-            FXMLLoader addPartLoader = new FXMLLoader(getClass().getResource(Paths.SETTINGSFXML), Paths.ENG_BUNDLE);
+            System.out.println("ACTUAL AL: " + activeLanguage.toString());
+            FXMLLoader addPartLoader = new FXMLLoader(getClass().getResource(Paths.SETTINGSFXML), activeLanguage);
             Parent root = addPartLoader.load();
             Stage newStage = new Stage(); 
             
@@ -126,7 +136,7 @@ public class MainPageController implements Initializable {
     @FXML 
     private void launchAbout(ActionEvent event){
         try {
-            FXMLLoader addPartLoader = new FXMLLoader(getClass().getResource(Paths.ABOUTFXML), Paths.ENG_BUNDLE);
+            FXMLLoader addPartLoader = new FXMLLoader(getClass().getResource(Paths.ABOUTFXML), activeLanguage);
             Parent root = addPartLoader.load();
             Stage newStage = new Stage(); 
             
@@ -155,6 +165,9 @@ public class MainPageController implements Initializable {
         outputDisplayVBox.getStyleClass().add(Strings.FILE_DISPLAY_VBOX_CSS);
         
         propertyPackage = getProperties();
+        
+        activeLanguage = Paths.ENG_BUNDLE;
+        buildSupportedLanguages();
     }    
 
     private PropertyPackage getProperties(){
@@ -162,5 +175,35 @@ public class MainPageController implements Initializable {
         propManager.readProperties();
         PropertyPackage returnPackage = propManager.getProperties();
         return returnPackage;
+    }
+
+    private void buildSupportedLanguages() {
+        for(SupportedLanguage lang : Paths.SUPPORTED_LANGUAGES){
+            MenuItem newItem = new MenuItem(lang.getNAME());
+            
+            newItem.setOnAction((event) -> {
+                activeLanguage = lang.getBUNDLE();
+                System.out.println("NEW AL: " + activeLanguage.toString() + " AKA " + lang.getNAME());
+                try {
+                    FXMLLoader newLanguageLoader = new FXMLLoader(getClass().getResource(Paths.MAINFXML), lang.getBUNDLE());
+                    
+                    Parent root = newLanguageLoader.load();
+                    
+                    MainPageController newMainController = newLanguageLoader.<MainPageController>getController();
+                    //PASS NEW LANGUAGE TO NEW VERSION OF MAIN MENU CONTROLLER PRIOR TO SHOW
+                    newMainController.setLanguage(activeLanguage);
+                    
+                    Scene scene = mainPane.getScene();
+                    scene.setRoot(root);
+                } catch (IOException ex) {
+                    Logger.getLogger(MainPageController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+            mainLangMenu.getItems().add(newItem);
+        }
+    }
+    
+    public void setLanguage(ResourceBundle newBundle){
+        activeLanguage = newBundle;
     }
 }
