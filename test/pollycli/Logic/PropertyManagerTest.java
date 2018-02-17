@@ -60,6 +60,8 @@ public class PropertyManagerTest {
     
     @AfterClass
     public static void tearDownClass() {
+        File f = new File("test.txt");
+        f.delete();
     }
 
     /**

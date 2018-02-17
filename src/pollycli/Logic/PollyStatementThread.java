@@ -85,7 +85,7 @@ public class PollyStatementThread extends Thread{
         progressBar.setVisible(false);
     }
     
-    String readFile(String fileName) throws IOException {
+    private String readFile(String fileName) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(fileName));
         try {
             StringBuilder sb = new StringBuilder();

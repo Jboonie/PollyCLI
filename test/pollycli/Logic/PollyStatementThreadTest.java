@@ -36,6 +36,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import pollycli.DataStructures.PropertyPair;
 import java.util.Properties;
+import javafx.scene.control.ProgressBar;
+import pollycli.DataStructures.FileStatusTracker;
 import pollycli.DataStructures.PropertyPackage;
 
 /**
@@ -62,6 +64,7 @@ public class PollyStatementThreadTest {
         property.setProperty(testPair.getTarget(), testPair.getData());
         OutputStream out = new FileOutputStream(testFile);
         property.store(out, "");
+        out.close();
         directoryContents = new ArrayList<>();
         directoryContents.add(testFile);
     }
@@ -72,17 +75,8 @@ public class PollyStatementThreadTest {
     
     @AfterClass
     public static void tearDownClass() {
-    }
-    /**
-     * Test of readFile method, of class PollyStatementThread.
-     */
-    @Test
-    public void testReadFile() throws Exception {
-        PollyStatementThread instance = new PollyStatementThread(directoryContents,
-                null, null);
-        String str = instance.readFile(directoryContents.get(0).getAbsolutePath());
-        assertTrue(str.contains(testPair.getTarget()));
-        assertTrue(str.contains(testPair.getData()));
+        File f = new File("testFile.txt");
+        f.delete();
     }
     
     @Test
