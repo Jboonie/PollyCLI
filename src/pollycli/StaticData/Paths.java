@@ -23,8 +23,6 @@
  */
 package pollycli.StaticData;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.scene.image.Image;
 import pollycli.DataStructures.SupportedLanguage;
@@ -64,9 +62,15 @@ public class Paths {
     public static String LANG_FR = "pollycli.Bundles.LangBundle_fr";
     public static ResourceBundle FR_BUNDLE = ResourceBundle.getBundle(Paths.LANG_FR);
     private static SupportedLanguage LANG_SUPPORTED_FR = new SupportedLanguage(LANG_FR_NAME, FR_BUNDLE);
+
+        //CHINESE
+    private static String LANG_CH_NAME = "Chinese";
+    public static String LANG_CH = "pollycli.Bundles.LangBundle_ch";
+    public static ResourceBundle CH_BUNDLE = ResourceBundle.getBundle(Paths.LANG_CH);
+    private static SupportedLanguage LANG_SUPPORTED_CH = new SupportedLanguage(LANG_CH_NAME, CH_BUNDLE);
     
     //TO ADD NEW LANGUAGE CREATE PROP FILE AND THEN ADD TO BUNDLES & THIS ARRAY
-    public static SupportedLanguage[] SUPPORTED_LANGUAGES = {LANG_SUPPORTED_EN, LANG_SUPPORTED_ES, LANG_SUPPORTED_FR};
+    public static SupportedLanguage[] SUPPORTED_LANGUAGES = {LANG_SUPPORTED_EN, LANG_SUPPORTED_ES, LANG_SUPPORTED_FR, LANG_SUPPORTED_CH};
     
     //Client Side Properties
     public static String CLIENT_PROPERTIES = "config.properties";
