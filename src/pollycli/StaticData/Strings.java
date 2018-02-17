@@ -25,6 +25,7 @@ package pollycli.StaticData;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -87,6 +88,13 @@ public class Strings {
     public static final String PROJECT_FINDING_AWS_CLI_URL = "https://github.com/Jboonie/PollyCLI/wiki/05-Finding-the-Amazon-CLI-Install-Directory";
     public static final String PROJECT_CONFIGURING_POLLY_CLI_URL = "https://github.com/Jboonie/PollyCLI/wiki/06-Configuring-PollyCLI";
     
+    //Supported Input Types
+    private static final String[] SUPPORTED_INPUT_ARRAY = {".txt"};
+    public static final ArrayList<String> SUPPORTED_INPUT = new ArrayList<>(Arrays.asList(SUPPORTED_INPUT_ARRAY));
+    public static final String FILE_EXTENSION_SEPERATOR = ".";
+    public static final String FILE_DEFAULT_BROWSE_DIRECTORY = "C:\\";
+    
+    public static final String NEW_LINE = "\n";
     
     public Strings() {
     }    

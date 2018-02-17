@@ -33,6 +33,7 @@ import pollycli.DataStructures.FileStatusTracker;
 import pollycli.DataStructures.PollyStatement;
 import pollycli.DataStructures.PropertyPackage;
 import pollycli.StaticData.Paths;
+import pollycli.StaticData.Strings;
 
 /**
  *
@@ -92,7 +93,7 @@ public class PollyStatementThread extends Thread{
 
             while (line != null) {
                 sb.append(line);
-                sb.append("\n");
+                sb.append(Strings.NEW_LINE);
                 line = br.readLine();
             }
             return sb.toString();

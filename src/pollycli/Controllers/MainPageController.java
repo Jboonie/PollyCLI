@@ -26,7 +26,6 @@ package pollycli.Controllers;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -38,7 +37,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
@@ -57,27 +55,26 @@ import pollycli.StaticData.Strings;
  */
 public class MainPageController implements Initializable {
     
+    //CLASS VARIABLES
     private File trackedDirectory;
     private ArrayList<File> directoryContents;
-    private Charset utf = Charset.defaultCharset();
     private PropertyPackage propertyPackage;
-    
     private ArrayList<FileStatusTracker> targetFiles;
     
     @FXML
     private TextField textField;
-    
-    @FXML 
-    private TextArea textArea;
-
     @FXML
-    private VBox testVBox;
+    private VBox outputDisplayVBox;
     @FXML
     private ProgressBar progressBar;
     
+    //ATTACHED TO BROWSE BUTTON
     @FXML
     private void loadDirectory(ActionEvent e){
         directoryContents = new ArrayList<File>();
+        targetFiles = new ArrayList<>();
+        outputDisplayVBox.getChildren().clear();
+        
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setInitialDirectory(trackedDirectory);
         trackedDirectory = directoryChooser.showDialog(null);
@@ -85,26 +82,28 @@ public class MainPageController implements Initializable {
 
         File[] tempFileList = trackedDirectory.listFiles();
         
-        for(int i = 0; i < tempFileList.length; i++){
-            if(tempFileList[i].getName().contains(".txt")){
-                directoryContents.add(tempFileList[i]);
-            }
-        }
-
         for(File file : tempFileList){
-            if(file.getName().contains(".txt")){
-                FileDisplayItem newDisplay = new FileDisplayItem(file.getName());
-                testVBox.getChildren().add(newDisplay);
-                targetFiles.add(new FileStatusTracker(newDisplay, file));
+            if(file.isFile()){
+                if(file.getName().contains(Strings.FILE_EXTENSION_SEPERATOR)){
+                    String fileExt = file.getName().substring(file.getName().indexOf(Strings.FILE_EXTENSION_SEPERATOR));
+                    if(Strings.SUPPORTED_INPUT.contains(fileExt)){
+                        directoryContents.add(file);
+                        FileDisplayItem newDisplay = new FileDisplayItem(file.getName());
+                        outputDisplayVBox.getChildren().add(newDisplay);
+                        targetFiles.add(new FileStatusTracker(newDisplay, file));
+                    }
+                }
             }
         }
     }
     
-        @FXML
+    //ATTACHED TO CONVERT BUTTON
+    @FXML
     private void convertFiles(ActionEvent event) throws IOException{
-        PollyStatementThread newThread = new PollyStatementThread(directoryContents, targetFiles, progressBar);
+        new PollyStatementThread(directoryContents, targetFiles, progressBar);
     }
   
+    //ATTACHED TO CONFIGURE BUTTON
     @FXML
     private void launchSettings(ActionEvent event){
         try {
@@ -123,6 +122,7 @@ public class MainPageController implements Initializable {
         }
     }
     
+    //ATTACHED TO ABOUT BUTTON
     @FXML 
     private void launchAbout(ActionEvent event){
         try {
@@ -143,16 +143,16 @@ public class MainPageController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        trackedDirectory = new File("C:\\");
+        trackedDirectory = new File(Strings.FILE_DEFAULT_BROWSE_DIRECTORY);
         directoryContents = new ArrayList<>();
         targetFiles = new ArrayList<>();
-        textArea.setEditable(false);
-        textArea.setVisible(false);
         
-        testVBox.getStylesheets().clear();
-        testVBox.getStylesheets().add(Strings.CSS_FILE_PATH);
-        testVBox.getStyleClass().clear();
-        testVBox.getStyleClass().add(Strings.FILE_DISPLAY_VBOX_CSS);
+        textField.setEditable(false);
+        
+        outputDisplayVBox.getStylesheets().clear();
+        outputDisplayVBox.getStylesheets().add(Strings.CSS_FILE_PATH);
+        outputDisplayVBox.getStyleClass().clear();
+        outputDisplayVBox.getStyleClass().add(Strings.FILE_DISPLAY_VBOX_CSS);
         
         propertyPackage = getProperties();
     }    

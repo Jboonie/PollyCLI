@@ -48,13 +48,25 @@
     -fx-spacing: 3;
 }
 
-.fileDisplayItem{
+.fileDisplayScrollPane{
     -fx-border-radius: 5;
-    -fx-border-color: red;
+}
+
+.fileDisplayItem{
+    -fx-background-color: 
+        #cc0000,
+        linear-gradient(#cc0000, #690000);
+    -fx-background-insets: 2;
+    -fx-border-radius: 5;
+    -fx-border-color: black;
     -fx-border-width: 2;
 }
 .fileDisplayItemProcessed{
+    -fx-background-color: 
+        #69ffbc,
+        linear-gradient(#69ff86, #69ff00);
+    -fx-background-insets: 2;
     -fx-border-radius: 5;
-    -fx-border-color: green;
+    -fx-border-color: black;
     -fx-border-width: 2;
 }

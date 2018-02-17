@@ -35,7 +35,6 @@ THE SOFTWARE.
       <TextField fx:id="textField" layoutX="12.0" layoutY="34.0" prefHeight="25.0" prefWidth="402.0" />
       <Button id="button" fx:id="loadButton" layoutX="194.0" layoutY="67.0" mnemonicParsing="false" onAction="#loadDirectory" stylesheets="@../Style/style.css" text="%mainLoadButton" />
       <Button fx:id="convertButton" layoutX="186.0" layoutY="388.0" mnemonicParsing="false" onAction="#convertFiles" text="%mainConvertButton" />
-      <TextArea fx:id="textArea" disable="true" layoutX="10.0" layoutY="99.0" prefHeight="282.0" prefWidth="408.0" />
       <MenuBar layoutY="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
           <Menu mnemonicParsing="false" text="Settings">
@@ -50,9 +49,9 @@ THE SOFTWARE.
           </Menu>
         </menus>
       </MenuBar>
-      <ScrollPane fx:id="testScrollPane" fitToWidth="true" hbarPolicy="NEVER" layoutX="9.0" layoutY="105.0" prefHeight="270.0" prefWidth="408.0">
+      <ScrollPane fx:id="testScrollPane" fitToWidth="true" hbarPolicy="NEVER" layoutX="9.0" layoutY="105.0" prefHeight="270.0" prefWidth="408.0" styleClass="fileDisplayScrollPane" stylesheets="@../Style/style.css">
          <content>
-            <VBox fx:id="testVBox" prefHeight="261.0" prefWidth="403.0" />
+            <VBox fx:id="outputDisplayVBox" prefHeight="261.0" prefWidth="403.0" styleClass="fileDisplayVBox" stylesheets="@../Style/style.css" />
          </content>
       </ScrollPane>
       <ProgressBar fx:id="progressBar" layoutX="14.0" layoutY="388.0" prefHeight="25.0" prefWidth="164.0" progress="0.0" visible="false" />
