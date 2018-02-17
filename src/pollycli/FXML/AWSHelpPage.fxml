@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import java.util.*?>
@@ -7,8 +9,39 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pollycli.Controllers.AWSHelpPageController">
+<AnchorPane id="AnchorPane" prefHeight="900.0" prefWidth="1200.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pollycli.Controllers.AWSHelpPageController">
     <stylesheets>
-        <URL value="@/pollycli/Style/style.css"/>
+        <URL value="@/pollycli/Style/style.css" />
     </stylesheets>
+   <children>
+      <TabPane layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <tabs>
+            <Tab text="Getting Started">
+               <content>
+                  <ScrollPane fx:id="AWSHelpGettingStarted" fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+          <Tab text="Installing AWS CLI">
+               <content>
+                  <ScrollPane fx:id="AWSHelpCLIInstallScrollPane" fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+          <Tab text="Configuring AWS CLI">
+               <content>
+                  <ScrollPane fx:id="AWSHelpConfigureAWSCLI" fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab text="Finding AWS CLI">
+               <content>
+                  <ScrollPane fx:id="AWSHelpFindAWSCLI" fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab text="Configuring PollyCLI">
+               <content>
+                  <ScrollPane fx:id="AWSHelpConfigurePollyCLI" fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
 </AnchorPane>

@@ -25,6 +25,7 @@ package pollycli.StaticData;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -32,7 +33,13 @@ import java.util.ArrayList;
  */
 public class Strings {
 
-    public static String MainPageTitle = "PollyCLI 0.1";
+    private static final String VERSION = "0.2";
+    private static final String APPNAME = "PollyCLI";
+    private static final String TITLEBAR = APPNAME + " " + VERSION;
+    public static final String MainPageTitle = TITLEBAR;
+    public static final String SettingsPageTitle = TITLEBAR + " - Settings";
+    public static final String SettingsAWSHelpTitle = TITLEBAR + " - AWS Configuration Help";
+    public static final String AboutPageTitle = TITLEBAR + " - About";
     
     public static String SETTINGS_OUTPUT = "OUTPUT";
     public static String SETTINGS_AWSCMD = "AWSDIRECTORY";
@@ -69,9 +76,25 @@ public class Strings {
             "Kendra", "Joey", "Kimberly", "Ivy"};
     
     //File Type Stuff
-    public static String[] FILE_TYPES = {"mp3"};
+    public static String[] FILE_TYPES = {"mp3", "ogg_vorbis", "pcm"};
     
     public Charset UTF = Charset.defaultCharset();
+    
+    //PROJECT URL(S) & HELP FILE URL(S)
+    public static final String PROJECT_INSTALL_AWS_CLI_URL = "https://github.com/Jboonie/PollyCLI/wiki/03-Installing-Amazon-CLI";
+    public static final String PROJECT_CONFIGURE_AWS_CLI_URL = "https://github.com/Jboonie/PollyCLI/wiki/04-Configuring-Amazon-CLI";
+    public static final String PROJECT_WEBSITE_URL = "https://github.com/Jboonie/PollyCLI";
+    public static final String PROJECT_GETTING_STARTED_URL = "https://github.com/Jboonie/PollyCLI/wiki/02-Getting-Started";
+    public static final String PROJECT_FINDING_AWS_CLI_URL = "https://github.com/Jboonie/PollyCLI/wiki/05-Finding-the-Amazon-CLI-Install-Directory";
+    public static final String PROJECT_CONFIGURING_POLLY_CLI_URL = "https://github.com/Jboonie/PollyCLI/wiki/06-Configuring-PollyCLI";
+    
+    //Supported Input Types
+    private static final String[] SUPPORTED_INPUT_ARRAY = {".txt"};
+    public static final ArrayList<String> SUPPORTED_INPUT = new ArrayList<>(Arrays.asList(SUPPORTED_INPUT_ARRAY));
+    public static final String FILE_EXTENSION_SEPERATOR = ".";
+    public static final String FILE_DEFAULT_BROWSE_DIRECTORY = "C:\\";
+    
+    public static final String NEW_LINE = "\n";
     
     public Strings() {
     }    

@@ -25,18 +25,26 @@ package pollycli.Controllers;
 
 import pollycli.DataStructures.SettingsCombo;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import pollycli.DataStructures.PropertyPackage;
 import pollycli.DataStructures.PropertyPair;
 import pollycli.Logic.PropertyManager;
@@ -90,6 +98,10 @@ public class SettingsPageController implements Initializable{
     // Text Fields
     @FXML
     private TextField AWSTextField;
+    
+    //Label
+    @FXML
+    private Label AWSAWSLabel;
     
     // Class Variables
     private ArrayList<SettingsCombo> settingsCombo;
@@ -168,6 +180,24 @@ public class SettingsPageController implements Initializable{
             }
     }
     
+    @FXML
+    public void awsHelp(ActionEvent event){
+        try {
+            FXMLLoader addPartLoader = new FXMLLoader(getClass().getResource(Paths.AWSHELPFXML), Paths.ENG_BUNDLE);
+            Parent root = addPartLoader.load();
+            Stage newStage = new Stage(); 
+            
+            Scene scene = new Scene(root);
+            
+            newStage.setScene(scene);
+            newStage.getIcons().add(Paths.IMAGE_BIRD);
+            newStage.setTitle(Strings.SettingsAWSHelpTitle);
+            newStage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(MainPageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     
     
     @Override
@@ -185,6 +215,7 @@ public class SettingsPageController implements Initializable{
         
         loadChoiceBoxes();
         propertyManager = new PropertyManager(Paths.CLIENT_PROPERTIES);
+        populateFieldsWithCurrentSettings(propertyManager);
     }
     
     private void loadChoiceBoxes(){     
@@ -194,5 +225,26 @@ public class SettingsPageController implements Initializable{
         for(String s : Strings.FILE_TYPES){
             FileTypeChoiceBox.getItems().add(s);
         }
+    }
+
+    private void populateFieldsWithCurrentSettings(PropertyManager propertyManager) {
+        propertyManager.readProperties();
+        PropertyPackage pack = propertyManager.getProperties();
+        
+        for(int i = 0; i < pack.size(); i++){
+            if(pack.get(i).getTarget().equals(Strings.SETTINGS_AWSCMD)){
+                //AWSAWSLabel.setText(pack.get(i).getData());
+            }
+            if(pack.get(i).getTarget().equals(Strings.SETTINGS_NUMREQS)){
+                AWSTextField.setText(pack.get(i).getData());
+            }
+            if(pack.get(i).getTarget().equals(Strings.SETTINGS_OUTPUT)){
+                FileTypeChoiceBox.setValue(pack.get(i).getData());
+            }
+            if(pack.get(i).getTarget().equals(Strings.SETTINGS_SPEAKER)){
+                NarrationChoiceBox.setValue(pack.get(i).getData());
+            }
+        }
+        
     }
 }
