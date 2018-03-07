@@ -37,17 +37,17 @@ THE SOFTWARE.
       <Button fx:id="convertButton" layoutX="186.0" layoutY="388.0" mnemonicParsing="false" onAction="#convertFiles" text="%mainConvertButton" />
       <MenuBar layoutY="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
-          <Menu mnemonicParsing="false" text="Settings">
+          <Menu mnemonicParsing="false" text="%mainSettingsDrop">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#launchSettings" text="Configure" />
+              <MenuItem mnemonicParsing="false" onAction="#launchSettings" text="%mainSettingsConfigure" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Help">
+          <Menu mnemonicParsing="false" text="%mainHelpDrop">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#launchAbout" text="About" />
+              <MenuItem mnemonicParsing="false" onAction="#launchAbout" text="%mainHelpAbout" />
             </items>
           </Menu>
-            <Menu fx:id="mainLangMenu" mnemonicParsing="false" text="Language" />
+            <Menu fx:id="mainLangMenu" mnemonicParsing="false" text="%mainLangDrop" />
         </menus>
       </MenuBar>
       <ScrollPane fx:id="testScrollPane" fitToWidth="true" hbarPolicy="NEVER" layoutX="9.0" layoutY="105.0" prefHeight="270.0" prefWidth="408.0" styleClass="fileDisplayScrollPane" stylesheets="@../Style/style.css">
