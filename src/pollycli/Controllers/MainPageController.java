@@ -27,6 +27,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -89,21 +91,18 @@ public class MainPageController implements Initializable {
         trackedDirectory = directoryChooser.showDialog(null);
         textField.setText(trackedDirectory.getPath());
 
-        File[] tempFileList = trackedDirectory.listFiles();
-        
-        for(File file : tempFileList){
-            if(file.isFile()){
-                if(file.getName().contains(Strings.FILE_EXTENSION_SEPERATOR)){
-                    String fileExt = file.getName().substring(file.getName().indexOf(Strings.FILE_EXTENSION_SEPERATOR));
-                    if(Strings.SUPPORTED_INPUT.contains(fileExt)){
-                        directoryContents.add(file);
-                        FileDisplayItem newDisplay = new FileDisplayItem(file.getName());
-                        outputDisplayVBox.getChildren().add(newDisplay);
-                        targetFiles.add(new FileStatusTracker(newDisplay, file));
-                    }
-                }
-            }
-        }
+        List<File> fileList = Arrays.asList(trackedDirectory.listFiles());
+
+        fileList.stream()
+            .filter(file -> file.isFile())
+            .filter(file -> file.getName().contains(Strings.FILE_EXTENSION_SEPERATOR))
+            .filter(file -> Strings.SUPPORTED_INPUT.contains(file.getName().substring(file.getName().indexOf(Strings.FILE_EXTENSION_SEPERATOR))))
+            .forEach((file) -> {
+                directoryContents.add(file);
+                FileDisplayItem newDisplay = new FileDisplayItem(file.getName());
+                outputDisplayVBox.getChildren().add(newDisplay);
+                targetFiles.add(new FileStatusTracker(newDisplay, file));
+            });
     }
     
     //ATTACHED TO CONVERT BUTTON

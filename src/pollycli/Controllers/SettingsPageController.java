@@ -118,14 +118,14 @@ public class SettingsPageController implements Initializable{
     }
 
     private void showPane(Button b){
-        for(int i = 0; i < settingsCombo.size(); i++){
-            if(settingsCombo.get(i).getButton().getId().toString().equals(b.getId().toString())){
-                settingsCombo.get(i).getPane().setVisible(true);
+        settingsCombo.forEach((combo) -> {
+            if(combo.getButton().getId().toString().equals(b.getId().toString())){
+                combo.getPane().setVisible(true);
             }
             else{
-                settingsCombo.get(i).getPane().setVisible(false);
+                combo.getPane().setVisible(false);
             }
-        }
+        });
     }
     
     @FXML 
