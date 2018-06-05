@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,7 +60,6 @@ import pollycli.StaticData.Strings;
  */
 public class MainPageController implements Initializable {
     
-    //CLASS VARIABLES
     private File trackedDirectory;
     private ArrayList<File> directoryContents;
     private PropertyPackage propertyPackage;
@@ -84,26 +84,34 @@ public class MainPageController implements Initializable {
         targetFiles = new ArrayList<>();
         outputDisplayVBox.getChildren().clear();
         
+        textField.setText(chooseTargetDirectory()); 
+        findValidTargetFiles(trackedDirectory.listFiles());
+    }
+    
+    private void findValidTargetFiles(File[] initialFileList){
+        ArrayList<File> fileList = new ArrayList<>(Arrays.asList(initialFileList));
+        fileList.stream()
+                .filter(f -> f.getName().contains(Strings.FILE_EXTENSION_SEPERATOR))                
+                .filter(f -> Strings.SUPPORTED_INPUT.contains(getFileExt(f)))
+                .forEach(f -> {
+                    directoryContents.add(f);
+                    FileDisplayItem newDisplay = new FileDisplayItem(f.getName());
+                    outputDisplayVBox.getChildren().add(newDisplay);
+                    targetFiles.add(new FileStatusTracker(newDisplay, f));
+                });
+    }
+    
+    private String getFileExt(File file) {
+        return file.getName().substring(file.getName().indexOf(Strings.FILE_EXTENSION_SEPERATOR));
+    }
+    
+    
+    
+    private String chooseTargetDirectory() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setInitialDirectory(trackedDirectory);
         trackedDirectory = directoryChooser.showDialog(null);
-        textField.setText(trackedDirectory.getPath());
-
-        File[] tempFileList = trackedDirectory.listFiles();
-        
-        for(File file : tempFileList){
-            if(file.isFile()){
-                if(file.getName().contains(Strings.FILE_EXTENSION_SEPERATOR)){
-                    String fileExt = file.getName().substring(file.getName().indexOf(Strings.FILE_EXTENSION_SEPERATOR));
-                    if(Strings.SUPPORTED_INPUT.contains(fileExt)){
-                        directoryContents.add(file);
-                        FileDisplayItem newDisplay = new FileDisplayItem(file.getName());
-                        outputDisplayVBox.getChildren().add(newDisplay);
-                        targetFiles.add(new FileStatusTracker(newDisplay, file));
-                    }
-                }
-            }
-        }
+        return trackedDirectory.getPath();
     }
     
     //ATTACHED TO CONVERT BUTTON
