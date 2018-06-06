@@ -96,16 +96,16 @@ public class PollyStatementThread extends Thread{
     
     private void executeStatement(int i, PollyStatement statement){
         try {
-                Runtime.getRuntime().exec(buildExecString(statement, directoryContents.get(i)));
+                Runtime.getRuntime().exec(buildExecutableString(statement, directoryContents.get(i)));
                 updateUI(directoryContents.get(i));
                 progressBar.setProgress((double) i / (double) directoryContents.size());
-                threadPause(i);
+                pauseThread(i);
             } catch (Exception ex) {
                 Logger.getLogger(PollyStatementThread.class.getName()).log(Level.SEVERE, null, ex);
             }
     }
     
-    private String buildExecString(PollyStatement statement, File file){
+    private String buildExecutableString(PollyStatement statement, File file){
         try{
             String text = readFile(file.toString());
             return statement.getStatement(text, file);
@@ -133,7 +133,7 @@ public class PollyStatementThread extends Thread{
              .forEach(i -> targetFiles.get(i).getFileDisplayItem().toggleStatus());
     }
     
-    private void threadPause(int i){
+    private void pauseThread(int i){
         try{
             if((i > 0) && (i % processLimit == 0)){
                 Thread.sleep(threadSleepTime);
