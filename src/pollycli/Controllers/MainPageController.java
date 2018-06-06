@@ -44,11 +44,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.Stage;
 import pollycli.DataStructures.FileDisplayItem;
 import pollycli.DataStructures.FileStatusTracker;
 import pollycli.DataStructures.PropertyPackage;
 import pollycli.DataStructures.SupportedLanguage;
+import pollycli.DataStructures.UIController;
 import pollycli.Logic.PollyStatementThread;
 import pollycli.Logic.PropertyManager;
 import pollycli.StaticData.Paths;
@@ -58,13 +58,12 @@ import pollycli.StaticData.Strings;
  *
  * @author Jacob Boone
  */
-public class MainPageController implements Initializable {
+public class MainPageController extends UIController implements Initializable {
     
     private File trackedDirectory;
     private ArrayList<File> directoryContents;
     private PropertyPackage propertyPackage;
     private ArrayList<FileStatusTracker> targetFiles;
-    private ResourceBundle activeLanguage;
     
     @FXML
     private TextField textField;
@@ -114,50 +113,22 @@ public class MainPageController implements Initializable {
         return trackedDirectory.getPath();
     }
     
-    //ATTACHED TO CONVERT BUTTON
     @FXML
     private void convertFiles(ActionEvent event) throws IOException{
         new PollyStatementThread(directoryContents, targetFiles, progressBar);
     }
   
-    //ATTACHED TO CONFIGURE BUTTON
     @FXML
     private void launchSettings(ActionEvent event){
-        try {
-            System.out.println("ACTUAL AL: " + activeLanguage.toString());
-            FXMLLoader addPartLoader = new FXMLLoader(getClass().getResource(Paths.SETTINGSFXML), activeLanguage);
-            Parent root = addPartLoader.load();
-            Stage newStage = new Stage(); 
-            
-            Scene scene = new Scene(root);
-            
-            newStage.setScene(scene);
-            newStage.getIcons().add(Paths.IMAGE_BIRD);
-            newStage.setTitle(Strings.SettingsPageTitle);
-            newStage.show();
-        } catch (IOException ex) {
-            Logger.getLogger(MainPageController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        showStage(Paths.SETTINGSFXML, Strings.SettingsPageTitle);
     }
     
-    //ATTACHED TO ABOUT BUTTON
     @FXML 
     private void launchAbout(ActionEvent event){
-        try {
-            FXMLLoader addPartLoader = new FXMLLoader(getClass().getResource(Paths.ABOUTFXML), activeLanguage);
-            Parent root = addPartLoader.load();
-            Stage newStage = new Stage(); 
-            
-            Scene scene = new Scene(root);
-            
-            newStage.setScene(scene);
-            newStage.getIcons().add(Paths.IMAGE_BIRD);
-            newStage.setTitle(Strings.AboutPageTitle);
-            newStage.show();
-        } catch (IOException ex) {
-            Logger.getLogger(MainPageController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        showStage(Paths.ABOUTFXML, Strings.AboutPageTitle);
     }
+    
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -173,8 +144,6 @@ public class MainPageController implements Initializable {
         outputDisplayVBox.getStyleClass().add(Strings.FILE_DISPLAY_VBOX_CSS);
         
         propertyPackage = getProperties();
-        
-        activeLanguage = Paths.ENG_BUNDLE;
         buildSupportedLanguages();
     }    
 
