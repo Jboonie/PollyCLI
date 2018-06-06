@@ -47,6 +47,8 @@ public class PollyStatementThread extends Thread{
     private PropertyPackage propertyPackage;
     private ArrayList<FileStatusTracker> targetFiles;
     private ProgressBar progressBar;
+    private static final int processLimit = 60;
+    public static final int threadSleepTime = 2000;
     
     public PollyStatementThread(ArrayList<File> contents, ArrayList<FileStatusTracker> fileDisplay, ProgressBar progressBar) {
         targetFiles = fileDisplay;
@@ -56,42 +58,62 @@ public class PollyStatementThread extends Thread{
         start();
     }
     
+    private PropertyPackage getProperties(){
+        PropertyManager propManager = new PropertyManager(Paths.CLIENT_PROPERTIES);
+        propManager.readProperties();
+        PropertyPackage returnPackage = propManager.getProperties();
+        return returnPackage;
+    }
+    
     public void run(){
         progressBarVisible(true);
-        executeStatement();
+        buildStatement();
         progressBarVisible(false);
     }
     
-    private void executeStatement(){
-        PollyStatement statement = new PollyStatement();
-        if(statement.loadPack(propertyPackage)){
-            if(directoryContents.size() > 0){
-                IntStream stream = IntStream.range(0, directoryContents.size());
-                 stream.forEach(i -> {
-                    try {
-                        String textPortion = readFile(directoryContents.get(i).toString());
-                        String runString = statement.getStatement(textPortion, directoryContents.get(i));
-                        Runtime.getRuntime().exec(runString);   
-                        updateUI(directoryContents.get(i));
-                        System.out.println(runString);
-                        progressBar.setProgress((double) i / (double) directoryContents.size());
-                        if(i != 0){
-                            if((i % 60) == 0){
-                            Thread.sleep(2000);
-                            }
-                        }
-                    } catch (Exception ex) {
-                        Logger.getLogger(PollyStatementThread.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                 });
-            }
-        }
-    }
-
     private void progressBarVisible(boolean visible) {
         progressBar.setVisible(visible);
         progressBar.setProgress(0);
+    }
+    
+    private void buildStatement(){
+        PollyStatement statement = new PollyStatement();
+        if(canExecuteStatement(statement)){
+            statement.loadPack(propertyPackage);
+            IntStream stream = IntStream.range(0, directoryContents.size());
+            stream.forEach(i -> executeStatement(i, statement));
         }
+    }
+    
+    private boolean canExecuteStatement(PollyStatement statement){
+        if(directoryContents.size() > 0){
+            if(statement.packLoadedSuccessfully(propertyPackage)){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private void executeStatement(int i, PollyStatement statement){
+        try {
+                Runtime.getRuntime().exec(buildExecString(statement, directoryContents.get(i)));
+                updateUI(directoryContents.get(i));
+                progressBar.setProgress((double) i / (double) directoryContents.size());
+                threadPause(i);
+            } catch (Exception ex) {
+                Logger.getLogger(PollyStatementThread.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }
+    
+    private String buildExecString(PollyStatement statement, File file){
+        try{
+            String text = readFile(file.toString());
+            return statement.getStatement(text, file);
+        } catch(Exception ex){
+            Logger.getLogger(PollyStatementThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "";
+    }
     
     private String readFile(String fileName) throws IOException {
         try {
@@ -100,21 +122,24 @@ public class PollyStatementThread extends Thread{
             stream.forEach(str -> returnString.append(str));
             return returnString.toString();
         } catch(Exception ex){
-            ex.printStackTrace();
+            Logger.getLogger(PollyStatementThread.class.getName()).log(Level.SEVERE, null, ex);
         }
         return "";
     }
     
-    private PropertyPackage getProperties(){
-        PropertyManager propManager = new PropertyManager(Paths.CLIENT_PROPERTIES);
-        propManager.readProperties();
-        PropertyPackage returnPackage = propManager.getProperties();
-        return returnPackage;
-    }
-
     private void updateUI(File file) {
         IntStream range = IntStream.range(0, targetFiles.size());
         range.filter(i -> targetFiles.get(i).getFile().equals(file))
              .forEach(i -> targetFiles.get(i).getFileDisplayItem().toggleStatus());
+    }
+    
+    private void threadPause(int i){
+        try{
+            if((i > 0) && (i % processLimit == 0)){
+                Thread.sleep(threadSleepTime);
+            }
+        }catch(Exception ex){
+            Logger.getLogger(PollyStatementThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

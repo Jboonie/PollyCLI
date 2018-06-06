@@ -82,13 +82,15 @@ public class PollyStatement {
         return returnVal;
     }
     
-    public boolean loadPack(PropertyPackage newPack){
+    public void loadPack(PropertyPackage newPack){
         this.pack = new PropertyPackage();
-        boolean returnVal = isVerified(trackedStatements, newPack);
-        if(returnVal){
+        if(isVerified(trackedStatements, newPack)){
             buildPack(newPack);
         }
-        return returnVal;
+    }
+    
+    public boolean packLoadedSuccessfully(PropertyPackage pack){
+        return isVerified(trackedStatements, pack);
     }
     
     //Populates internal package with appropriate data from the Strings class
