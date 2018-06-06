@@ -29,16 +29,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -76,13 +70,11 @@ public class MainPageController extends UIController implements Initializable {
     @FXML
     private AnchorPane mainPane;
     
-    //ATTACHED TO BROWSE BUTTON
     @FXML
     private void loadDirectory(ActionEvent e){
         directoryContents = new ArrayList<File>();
         targetFiles = new ArrayList<>();
         outputDisplayVBox.getChildren().clear();
-        
         textField.setText(chooseTargetDirectory()); 
         findValidTargetFiles(trackedDirectory.listFiles());
     }
@@ -103,9 +95,7 @@ public class MainPageController extends UIController implements Initializable {
     private String getFileExt(File file) {
         return file.getName().substring(file.getName().indexOf(Strings.FILE_EXTENSION_SEPERATOR));
     }
-    
-    
-    
+
     private String chooseTargetDirectory() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setInitialDirectory(trackedDirectory);
@@ -159,27 +149,7 @@ public class MainPageController extends UIController implements Initializable {
 
     private void initializeSupportedLanguages() {
         for(SupportedLanguage lang : Paths.SUPPORTED_LANGUAGES){
-            MenuItem newItem = new MenuItem(lang.getNAME());
-            
-            newItem.setOnAction((event) -> {
-                activeLanguage = lang.getBUNDLE();
-                System.out.println("NEW AL: " + activeLanguage.toString() + " AKA " + lang.getNAME());
-                try {
-                    FXMLLoader newLanguageLoader = new FXMLLoader(getClass().getResource(Paths.MAINFXML), lang.getBUNDLE());
-                    
-                    Parent root = newLanguageLoader.load();
-                    
-                    MainPageController newMainController = newLanguageLoader.<MainPageController>getController();
-                    //PASS NEW LANGUAGE TO NEW VERSION OF MAIN MENU CONTROLLER PRIOR TO SHOW
-                    newMainController.setLanguage(activeLanguage);
-                    
-                    Scene scene = mainPane.getScene();
-                    scene.setRoot(root);
-                } catch (IOException ex) {
-                    Logger.getLogger(MainPageController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            });
-            mainLangMenu.getItems().add(newItem);
+            mainLangMenu.getItems().add(lang.getMenuItem(Paths.MAINFXML, mainPane));
         }
     }
     

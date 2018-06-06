@@ -23,7 +23,17 @@
  */
 package pollycli.DataStructures;
 
+import java.io.IOException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.AnchorPane;
+import pollycli.Controllers.MainPageController;
+import pollycli.StaticData.Paths;
 
 /**
  *
@@ -53,5 +63,23 @@ public class SupportedLanguage {
 
     public void setNAME(String NAME) {
         this.NAME = NAME;
+    }
+    
+    public MenuItem getMenuItem(String path, AnchorPane mainPane){
+        MenuItem item = new MenuItem(NAME);
+        
+        item.setOnAction((event) -> {
+                try {
+                    FXMLLoader newLanguageLoader = new FXMLLoader(getClass().getResource(path), BUNDLE);
+                    Parent root = newLanguageLoader.load();
+                    MainPageController newMainController = newLanguageLoader.<MainPageController>getController();
+                    newMainController.setLanguage(BUNDLE);
+                    Scene scene = mainPane.getScene();
+                    scene.setRoot(root);
+                } catch (IOException ex) {
+                    Logger.getLogger(MainPageController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        return item;
     }
 }
