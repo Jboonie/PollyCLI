@@ -23,6 +23,7 @@
  */
 package pollycli.DataStructures;
 
+import java.io.IOException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,7 +31,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import pollycli.Controllers.MainPageController;
 import pollycli.StaticData.Paths;
 
 /**
@@ -44,20 +44,30 @@ public class UIController {
     public UIController() {
         activeLanguage = Paths.ENG_BUNDLE;
     }
+    
     public void showStage(String path, String title){
+        getStage(getScene(path), title).show();
+    }
+    
+    private Scene getScene(String path){
+        return new Scene(getParent(path));
+    }
+    
+    private Parent getParent(String path){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(path), activeLanguage);
-            Parent root = loader.load();
-            Stage newStage = new Stage(); 
-            
-            Scene scene = new Scene(root);
-            
-            newStage.setScene(scene);
-            newStage.getIcons().add(Paths.IMAGE_BIRD);
-            newStage.setTitle(title);
-            newStage.show();
-        } catch (Exception ex) {
-            Logger.getLogger(MainPageController.class.getName()).log(Level.SEVERE, null, ex);
+            return loader.load();
+        } catch (IOException ex) {
+            Logger.getLogger(UIController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return (Parent) new Object();
+    }
+    
+    private Stage getStage(Scene scene, String title){
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.getIcons().add(Paths.IMAGE_BIRD);
+        stage.setTitle(title);
+        return stage;
     }
 }
