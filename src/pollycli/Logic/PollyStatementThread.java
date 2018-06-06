@@ -23,17 +23,19 @@
  */
 package pollycli.Logic;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import javafx.scene.control.ProgressBar;
 import pollycli.DataStructures.FileStatusTracker;
 import pollycli.DataStructures.PollyStatement;
 import pollycli.DataStructures.PropertyPackage;
 import pollycli.StaticData.Paths;
-import pollycli.StaticData.Strings;
 
 /**
  *
@@ -55,51 +57,52 @@ public class PollyStatementThread extends Thread{
     }
     
     public void run(){
-        progressBar.setVisible(true);
-        progressBar.setProgress(0);
+        progressBarVisible(true);
+        executeStatement();
+        progressBarVisible(false);
+    }
+    
+    private void executeStatement(){
         PollyStatement statement = new PollyStatement();
         if(statement.loadPack(propertyPackage)){
             if(directoryContents.size() > 0){
-                for(int i = 0; i < directoryContents.size(); i++){
-                    try{
+                IntStream stream = IntStream.range(0, directoryContents.size());
+                 stream.forEach(i -> {
+                    try {
                         String textPortion = readFile(directoryContents.get(i).toString());
                         String runString = statement.getStatement(textPortion, directoryContents.get(i));
                         Runtime.getRuntime().exec(runString);   
-                        updateUIRepresentation(directoryContents.get(i));
+                        updateUI(directoryContents.get(i));
                         System.out.println(runString);
                         progressBar.setProgress((double) i / (double) directoryContents.size());
                         if(i != 0){
                             if((i % 60) == 0){
-//                            System.out.println("Sleeping: " + i + " % 60 is " + (i % 60));
                             Thread.sleep(2000);
                             }
                         }
+                    } catch (Exception ex) {
+                        Logger.getLogger(PollyStatementThread.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    catch(Exception e){
-                        System.out.println("Broke!");
-                        e.printStackTrace();
-                    }
-                }
+                 });
             }
         }
-        progressBar.setVisible(false);
     }
+
+    private void progressBarVisible(boolean visible) {
+        progressBar.setVisible(visible);
+        progressBar.setProgress(0);
+        }
     
     private String readFile(String fileName) throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader(fileName));
         try {
-            StringBuilder sb = new StringBuilder();
-            String line = br.readLine();
-
-            while (line != null) {
-                sb.append(line);
-                sb.append(Strings.NEW_LINE);
-                line = br.readLine();
-            }
-            return sb.toString();
-        } finally {
-            br.close();
+            StringBuilder returnString = new StringBuilder();
+            Stream<String> stream = Files.lines(java.nio.file.Paths.get(fileName));
+            stream.forEach(str -> returnString.append(str));
+            return returnString.toString();
+        } catch(Exception ex){
+            ex.printStackTrace();
         }
+        return "";
     }
     
     private PropertyPackage getProperties(){
@@ -109,13 +112,9 @@ public class PollyStatementThread extends Thread{
         return returnPackage;
     }
 
-    private void updateUIRepresentation(File get) {
-        for(int i = 0; i < targetFiles.size(); i++)
-        {
-            if(targetFiles.get(i).getFile().equals(get)){
-                targetFiles.get(i).getFileDisplayItem().toggleStatus();
-            }
-        }
+    private void updateUI(File file) {
+        IntStream range = IntStream.range(0, targetFiles.size());
+        range.filter(i -> targetFiles.get(i).getFile().equals(file))
+             .forEach(i -> targetFiles.get(i).getFileDisplayItem().toggleStatus());
     }
-    
 }
