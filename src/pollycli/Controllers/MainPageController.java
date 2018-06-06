@@ -128,25 +128,14 @@ public class MainPageController extends UIController implements Initializable {
         showStage(Paths.ABOUTFXML, Strings.AboutPageTitle);
     }
     
-    
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        trackedDirectory = new File(Strings.FILE_DEFAULT_BROWSE_DIRECTORY);
-        directoryContents = new ArrayList<>();
-        targetFiles = new ArrayList<>();
-        
-        textField.setEditable(false);
-        
-        outputDisplayVBox.getStylesheets().clear();
-        outputDisplayVBox.getStylesheets().add(Strings.CSS_FILE_PATH);
-        outputDisplayVBox.getStyleClass().clear();
-        outputDisplayVBox.getStyleClass().add(Strings.FILE_DISPLAY_VBOX_CSS);
-        
         propertyPackage = getProperties();
-        buildSupportedLanguages();
-    }    
-
+        initializeVariables();
+        initializeFormatting();
+        initializeSupportedLanguages();
+    }
+    
     private PropertyPackage getProperties(){
         PropertyManager propManager = new PropertyManager(Paths.CLIENT_PROPERTIES);
         propManager.readProperties();
@@ -154,7 +143,21 @@ public class MainPageController extends UIController implements Initializable {
         return returnPackage;
     }
 
-    private void buildSupportedLanguages() {
+    private void initializeVariables(){
+        trackedDirectory = new File(Strings.FILE_DEFAULT_BROWSE_DIRECTORY);
+        directoryContents = new ArrayList<>();
+        targetFiles = new ArrayList<>();
+    }
+    
+    public void initializeFormatting(){
+        textField.setEditable(false);
+        outputDisplayVBox.getStylesheets().clear();
+        outputDisplayVBox.getStylesheets().add(Strings.CSS_FILE_PATH);
+        outputDisplayVBox.getStyleClass().clear();
+        outputDisplayVBox.getStyleClass().add(Strings.FILE_DISPLAY_VBOX_CSS);
+    }
+
+    private void initializeSupportedLanguages() {
         for(SupportedLanguage lang : Paths.SUPPORTED_LANGUAGES){
             MenuItem newItem = new MenuItem(lang.getNAME());
             
