@@ -37,30 +37,34 @@ public class FileDisplayItem extends HBox{
     private boolean isComplete = false;
 
     public FileDisplayItem(String data) {
+        super();
         label = new Label(data);
+        applyStyles();
+    }
+    
+    private void applyStyles(){
         this.getStylesheets().clear();
         this.getStylesheets().add(Strings.CSS_FILE_PATH);
-        System.out.println(this.getStylesheets().toString());
         this.getStyleClass().add(Strings.FILE_DISPLAY_ITEM_UNPROCESSED_CSS);
         this.getChildren().add(label);
     }
     
     public void toggleStatus(){
         if(isComplete){
-            this.getStyleClass().clear();
-            this.getStyleClass().add(Strings.FILE_DISPLAY_ITEM_UNPROCESSED_CSS);
-            isComplete = false;
+            setStyleClass(Strings.FILE_DISPLAY_ITEM_UNPROCESSED_CSS);
         }
         else{
-            this.getStyleClass().clear();
-            this.getStyleClass().add(Strings.FILE_DISPLAY_ITEM_PROCESSED_CSS);
-            isComplete = true;
+            setStyleClass(Strings.FILE_DISPLAY_ITEM_PROCESSED_CSS);
         }
+        isComplete = !isComplete;
     }
     
+    private void setStyleClass(String styleClass){
+        this.getStyleClass().clear();
+        this.getStyleClass().add(styleClass);
+    }
+
     public boolean isComplete(){
         return isComplete;
-    }
-    
-    
+    }  
 }
