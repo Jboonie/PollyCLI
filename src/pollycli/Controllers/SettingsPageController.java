@@ -32,6 +32,7 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.IntStream;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -118,14 +119,14 @@ public class SettingsPageController implements Initializable{
     }
 
     private void showPane(Button b){
-        for(int i = 0; i < settingsCombo.size(); i++){
+        IntStream stream = IntStream.range(0, settingsCombo.size());
+        stream.forEach(i -> {
             if(settingsCombo.get(i).getButton().getId().toString().equals(b.getId().toString())){
                 settingsCombo.get(i).getPane().setVisible(true);
-            }
-            else{
+            }else{
                 settingsCombo.get(i).getPane().setVisible(false);
             }
-        }
+        });
     }
     
     @FXML 
@@ -172,12 +173,10 @@ public class SettingsPageController implements Initializable{
             }
         }
         if(pack.size() > 0){
-                for(int i = 0; i < pack.size(); i++){
-                    propertyManager.addProperty(pack.get(i));
-                    System.out.println("ADDING: " + pack.get(i).getData());
-                }
-                propertyManager.writeProperties();
-            }
+            IntStream stream = IntStream.range(0, pack.size());
+            stream.forEach(i -> propertyManager.addProperty(pack.get(i)));
+            propertyManager.writeProperties();
+        }
     }
     
     @FXML
@@ -231,7 +230,8 @@ public class SettingsPageController implements Initializable{
         propertyManager.readProperties();
         PropertyPackage pack = propertyManager.getProperties();
         
-        for(int i = 0; i < pack.size(); i++){
+        IntStream stream = IntStream.range(0, pack.size());
+        stream.forEach(i -> {
             if(pack.get(i).getTarget().equals(Strings.SETTINGS_AWSCMD)){
                 //AWSAWSLabel.setText(pack.get(i).getData());
             }
@@ -244,7 +244,6 @@ public class SettingsPageController implements Initializable{
             if(pack.get(i).getTarget().equals(Strings.SETTINGS_SPEAKER)){
                 NarrationChoiceBox.setValue(pack.get(i).getData());
             }
-        }
-        
+        });
     }
 }

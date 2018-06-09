@@ -39,10 +39,6 @@ import pollycli.StaticData.Strings;
  */
 public class AWSHelpPageController implements Initializable {
 
-//    @FXML
-//    private ScrollPane testingScrollPane;
-//    @FXML
-//    private Tab testTab;
     @FXML
     private ScrollPane AWSHelpGettingStarted;
     @FXML
