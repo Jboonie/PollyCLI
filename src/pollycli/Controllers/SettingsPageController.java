@@ -81,25 +81,20 @@ public class SettingsPageController implements Initializable{
     // Save Buttons
     @FXML
     private Button AWSSaveButton;
-    
     @FXML
-    private Button NarrationSaveButton;
-    
+    private Button NarrationSaveButton;  
     @FXML
     private Button OutputSaveButton;
     
     
     // ChoiceBoxes
     @FXML
-    private ChoiceBox FileTypeChoiceBox;
-    
+    private ChoiceBox FileTypeChoiceBox; 
     @FXML
-    private ChoiceBox NarrationChoiceBox;
-    
+    private ChoiceBox NarrationChoiceBox;   
     // Text Fields
     @FXML
-    private TextField AWSTextField;
-    
+    private TextField AWSTextField;   
     //Label
     @FXML
     private Label AWSAWSLabel;
@@ -118,15 +113,26 @@ public class SettingsPageController implements Initializable{
         showPane(button);
     }
 
-    private void showPane(Button b){
-        IntStream stream = IntStream.range(0, settingsCombo.size());
-        stream.forEach(i -> {
-            if(settingsCombo.get(i).getButton().getId().toString().equals(b.getId().toString())){
-                settingsCombo.get(i).getPane().setVisible(true);
+    private void showPane(Button button){
+        IntStream streamOfCombos = IntStream.range(0, settingsCombo.size());
+        streamOfCombos.forEach(i -> {
+            if(buttonMatches(settingsCombo.get(i), button)){
+                setPaneVisibilityOfCombo(settingsCombo.get(i), true);
             }else{
-                settingsCombo.get(i).getPane().setVisible(false);
+                setPaneVisibilityOfCombo(settingsCombo.get(i), false);
             }
         });
+    }
+    
+    private boolean buttonMatches(SettingsCombo combo, Button button){
+        if(combo.getButton().getId().equals(button.getId())){
+            return true;
+        }
+        return false;
+    }
+    
+    private void setPaneVisibilityOfCombo(SettingsCombo combo, boolean visible) {
+        combo.getPane().setVisible(visible);
     }
     
     @FXML 
@@ -143,6 +149,7 @@ public class SettingsPageController implements Initializable{
         PropertyPackage pack = new PropertyPackage();
         
         //AWS
+//        saveAWS();
         if(button.getId().equals(AWSSaveButton.getId())){
             if(AWSTextField.getText() != null){
                 String data = AWSTextField.getText();
@@ -157,6 +164,7 @@ public class SettingsPageController implements Initializable{
         }
         
         //Narration
+//        saveNarration();
         if(button.getId().equals(NarrationSaveButton.getId())){
             String data = (String) NarrationChoiceBox.getValue();
             if(data != null){
@@ -165,6 +173,7 @@ public class SettingsPageController implements Initializable{
         }
         
         //Output
+//        saveOutput();
         if(button.getId().equals(OutputSaveButton.getId())){
             String data = (String) FileTypeChoiceBox.getValue();
             System.out.println(data);
