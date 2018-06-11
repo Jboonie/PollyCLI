@@ -241,18 +241,35 @@ public class SettingsPageController implements Initializable{
         
         IntStream stream = IntStream.range(0, pack.size());
         stream.forEach(i -> {
-            if(pack.get(i).getTarget().equals(Strings.SETTINGS_AWSCMD)){
-                //AWSAWSLabel.setText(pack.get(i).getData());
-            }
-            if(pack.get(i).getTarget().equals(Strings.SETTINGS_NUMREQS)){
-                AWSTextField.setText(pack.get(i).getData());
-            }
-            if(pack.get(i).getTarget().equals(Strings.SETTINGS_OUTPUT)){
-                FileTypeChoiceBox.setValue(pack.get(i).getData());
-            }
-            if(pack.get(i).getTarget().equals(Strings.SETTINGS_SPEAKER)){
-                NarrationChoiceBox.setValue(pack.get(i).getData());
-            }
+            propertyTargetsAwscmd(pack.get(i));
+            propertyTargetsNumreqs(pack.get(i));
+            propertyTargetsOutput(pack.get(i));
+            propertyTargetsSpeaker(pack.get(i));
         });
+    }
+    
+    private void propertyTargetsAwscmd(PropertyPair pack) {
+          //NOT IMPLEMENTED YET
+//        if(pack.getTarget().equals(Strings.SETTINGS_AWSCMD)){
+//                //AWSAWSLabel.setText(pack.getData());
+//            }
+    }
+
+    private void propertyTargetsNumreqs(PropertyPair pack) {
+        if(pack.getTarget().equals(Strings.SETTINGS_NUMREQS)){
+                AWSTextField.setText(pack.getData());
+            }
+    }
+
+    private void propertyTargetsOutput(PropertyPair pack) {
+        if(pack.getTarget().equals(Strings.SETTINGS_OUTPUT)){
+                FileTypeChoiceBox.setValue(pack.getData());
+            }
+    }
+
+    private void propertyTargetsSpeaker(PropertyPair pack) {
+        if(pack.getTarget().equals(Strings.SETTINGS_SPEAKER)){
+                NarrationChoiceBox.setValue(pack.getData());
+            }
     }
 }
