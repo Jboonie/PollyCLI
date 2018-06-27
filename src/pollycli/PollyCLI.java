@@ -39,13 +39,10 @@ import pollycli.StaticData.Strings;
 public class PollyCLI extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader MainPageLoader = new FXMLLoader(getClass().getResource(Paths.MAINFXML), Paths.ENG_BUNDLE);
-        
+        FXMLLoader MainPageLoader = new FXMLLoader(getClass().getResource(Paths.MAINFXML), Paths.ENG_BUNDLE);        
         File properties = new File(Paths.CLIENT_PROPERTIES);
-        System.out.println(properties.createNewFile());
         
         Parent root = MainPageLoader.load();
-        
         Scene scene = new Scene(root);
         
         stage.setScene(scene);
@@ -54,9 +51,6 @@ public class PollyCLI extends Application {
         stage.show();
     }
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         launch(args);
     }

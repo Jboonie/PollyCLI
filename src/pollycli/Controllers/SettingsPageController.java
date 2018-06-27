@@ -32,6 +32,7 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.IntStream;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -80,25 +81,20 @@ public class SettingsPageController implements Initializable{
     // Save Buttons
     @FXML
     private Button AWSSaveButton;
-    
     @FXML
-    private Button NarrationSaveButton;
-    
+    private Button NarrationSaveButton;  
     @FXML
     private Button OutputSaveButton;
     
     
     // ChoiceBoxes
     @FXML
-    private ChoiceBox FileTypeChoiceBox;
-    
+    private ChoiceBox FileTypeChoiceBox; 
     @FXML
-    private ChoiceBox NarrationChoiceBox;
-    
+    private ChoiceBox NarrationChoiceBox;   
     // Text Fields
     @FXML
-    private TextField AWSTextField;
-    
+    private TextField AWSTextField;   
     //Label
     @FXML
     private Label AWSAWSLabel;
@@ -117,15 +113,26 @@ public class SettingsPageController implements Initializable{
         showPane(button);
     }
 
-    private void showPane(Button b){
-        for(int i = 0; i < settingsCombo.size(); i++){
-            if(settingsCombo.get(i).getButton().getId().toString().equals(b.getId().toString())){
-                settingsCombo.get(i).getPane().setVisible(true);
+    private void showPane(Button button){
+        IntStream streamOfCombos = IntStream.range(0, settingsCombo.size());
+        streamOfCombos.forEach(i -> {
+            if(buttonMatches(settingsCombo.get(i), button)){
+                setPaneVisibilityOfCombo(settingsCombo.get(i), true);
+            }else{
+                setPaneVisibilityOfCombo(settingsCombo.get(i), false);
             }
-            else{
-                settingsCombo.get(i).getPane().setVisible(false);
-            }
+        });
+    }
+    
+    private boolean buttonMatches(SettingsCombo combo, Button button){
+        if(combo.getButton().getId().equals(button.getId())){
+            return true;
         }
+        return false;
+    }
+    
+    private void setPaneVisibilityOfCombo(SettingsCombo combo, boolean visible) {
+        combo.getPane().setVisible(visible);
     }
     
     @FXML 
@@ -142,6 +149,7 @@ public class SettingsPageController implements Initializable{
         PropertyPackage pack = new PropertyPackage();
         
         //AWS
+//        saveAWS();
         if(button.getId().equals(AWSSaveButton.getId())){
             if(AWSTextField.getText() != null){
                 String data = AWSTextField.getText();
@@ -156,6 +164,7 @@ public class SettingsPageController implements Initializable{
         }
         
         //Narration
+//        saveNarration();
         if(button.getId().equals(NarrationSaveButton.getId())){
             String data = (String) NarrationChoiceBox.getValue();
             if(data != null){
@@ -164,6 +173,7 @@ public class SettingsPageController implements Initializable{
         }
         
         //Output
+//        saveOutput();
         if(button.getId().equals(OutputSaveButton.getId())){
             String data = (String) FileTypeChoiceBox.getValue();
             System.out.println(data);
@@ -172,12 +182,10 @@ public class SettingsPageController implements Initializable{
             }
         }
         if(pack.size() > 0){
-                for(int i = 0; i < pack.size(); i++){
-                    propertyManager.addProperty(pack.get(i));
-                    System.out.println("ADDING: " + pack.get(i).getData());
-                }
-                propertyManager.writeProperties();
-            }
+            IntStream stream = IntStream.range(0, pack.size());
+            stream.forEach(i -> propertyManager.addProperty(pack.get(i)));
+            propertyManager.writeProperties();
+        }
     }
     
     @FXML
@@ -231,20 +239,37 @@ public class SettingsPageController implements Initializable{
         propertyManager.readProperties();
         PropertyPackage pack = propertyManager.getProperties();
         
-        for(int i = 0; i < pack.size(); i++){
-            if(pack.get(i).getTarget().equals(Strings.SETTINGS_AWSCMD)){
-                //AWSAWSLabel.setText(pack.get(i).getData());
+        IntStream stream = IntStream.range(0, pack.size());
+        stream.forEach(i -> {
+            propertyTargetsAwscmd(pack.get(i));
+            propertyTargetsNumreqs(pack.get(i));
+            propertyTargetsOutput(pack.get(i));
+            propertyTargetsSpeaker(pack.get(i));
+        });
+    }
+    
+    private void propertyTargetsAwscmd(PropertyPair pack) {
+          //NOT IMPLEMENTED YET
+//        if(pack.getTarget().equals(Strings.SETTINGS_AWSCMD)){
+//                //AWSAWSLabel.setText(pack.getData());
+//            }
+    }
+
+    private void propertyTargetsNumreqs(PropertyPair pack) {
+        if(pack.getTarget().equals(Strings.SETTINGS_NUMREQS)){
+                AWSTextField.setText(pack.getData());
             }
-            if(pack.get(i).getTarget().equals(Strings.SETTINGS_NUMREQS)){
-                AWSTextField.setText(pack.get(i).getData());
+    }
+
+    private void propertyTargetsOutput(PropertyPair pack) {
+        if(pack.getTarget().equals(Strings.SETTINGS_OUTPUT)){
+                FileTypeChoiceBox.setValue(pack.getData());
             }
-            if(pack.get(i).getTarget().equals(Strings.SETTINGS_OUTPUT)){
-                FileTypeChoiceBox.setValue(pack.get(i).getData());
+    }
+
+    private void propertyTargetsSpeaker(PropertyPair pack) {
+        if(pack.getTarget().equals(Strings.SETTINGS_SPEAKER)){
+                NarrationChoiceBox.setValue(pack.getData());
             }
-            if(pack.get(i).getTarget().equals(Strings.SETTINGS_SPEAKER)){
-                NarrationChoiceBox.setValue(pack.get(i).getData());
-            }
-        }
-        
     }
 }

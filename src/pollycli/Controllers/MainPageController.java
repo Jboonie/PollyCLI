@@ -27,27 +27,22 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.Stage;
 import pollycli.DataStructures.FileDisplayItem;
 import pollycli.DataStructures.FileStatusTracker;
 import pollycli.DataStructures.PropertyPackage;
 import pollycli.DataStructures.SupportedLanguage;
+import pollycli.DataStructures.UIController;
 import pollycli.Logic.PollyStatementThread;
 import pollycli.Logic.PropertyManager;
 import pollycli.StaticData.Paths;
@@ -57,14 +52,12 @@ import pollycli.StaticData.Strings;
  *
  * @author Jacob Boone
  */
-public class MainPageController implements Initializable {
+public class MainPageController extends UIController implements Initializable {
     
-    //CLASS VARIABLES
     private File trackedDirectory;
     private ArrayList<File> directoryContents;
     private PropertyPackage propertyPackage;
     private ArrayList<FileStatusTracker> targetFiles;
-    private ResourceBundle activeLanguage;
     
     @FXML
     private TextField textField;
@@ -77,99 +70,62 @@ public class MainPageController implements Initializable {
     @FXML
     private AnchorPane mainPane;
     
-    //ATTACHED TO BROWSE BUTTON
     @FXML
     private void loadDirectory(ActionEvent e){
         directoryContents = new ArrayList<File>();
         targetFiles = new ArrayList<>();
         outputDisplayVBox.getChildren().clear();
-        
+        textField.setText(chooseTargetDirectory()); 
+        findValidTargetFiles(trackedDirectory.listFiles());
+    }
+    
+    private void findValidTargetFiles(File[] initialFileList){
+        ArrayList<File> fileList = new ArrayList<>(Arrays.asList(initialFileList));
+        fileList.stream()
+                .filter(f -> f.getName().contains(Strings.FILE_EXTENSION_SEPERATOR))                
+                .filter(f -> Strings.SUPPORTED_INPUT.contains(getFileExt(f)))
+                .forEach(f -> {
+                    directoryContents.add(f);
+                    FileDisplayItem newDisplay = new FileDisplayItem(f.getName());
+                    outputDisplayVBox.getChildren().add(newDisplay);
+                    targetFiles.add(new FileStatusTracker(newDisplay, f));
+                });
+    }
+    
+    private String getFileExt(File file) {
+        return file.getName().substring(file.getName().indexOf(Strings.FILE_EXTENSION_SEPERATOR));
+    }
+
+    private String chooseTargetDirectory() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setInitialDirectory(trackedDirectory);
         trackedDirectory = directoryChooser.showDialog(null);
-        textField.setText(trackedDirectory.getPath());
-
-        File[] tempFileList = trackedDirectory.listFiles();
-        
-        for(File file : tempFileList){
-            if(file.isFile()){
-                if(file.getName().contains(Strings.FILE_EXTENSION_SEPERATOR)){
-                    String fileExt = file.getName().substring(file.getName().indexOf(Strings.FILE_EXTENSION_SEPERATOR));
-                    if(Strings.SUPPORTED_INPUT.contains(fileExt)){
-                        directoryContents.add(file);
-                        FileDisplayItem newDisplay = new FileDisplayItem(file.getName());
-                        outputDisplayVBox.getChildren().add(newDisplay);
-                        targetFiles.add(new FileStatusTracker(newDisplay, file));
-                    }
-                }
-            }
-        }
+        return trackedDirectory.getPath();
     }
     
-    //ATTACHED TO CONVERT BUTTON
     @FXML
     private void convertFiles(ActionEvent event) throws IOException{
         new PollyStatementThread(directoryContents, targetFiles, progressBar);
     }
   
-    //ATTACHED TO CONFIGURE BUTTON
     @FXML
     private void launchSettings(ActionEvent event){
-        try {
-            System.out.println("ACTUAL AL: " + activeLanguage.toString());
-            FXMLLoader addPartLoader = new FXMLLoader(getClass().getResource(Paths.SETTINGSFXML), activeLanguage);
-            Parent root = addPartLoader.load();
-            Stage newStage = new Stage(); 
-            
-            Scene scene = new Scene(root);
-            
-            newStage.setScene(scene);
-            newStage.getIcons().add(Paths.IMAGE_BIRD);
-            newStage.setTitle(Strings.SettingsPageTitle);
-            newStage.show();
-        } catch (IOException ex) {
-            Logger.getLogger(MainPageController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        showStage(Paths.SETTINGSFXML, Strings.SettingsPageTitle);
     }
     
-    //ATTACHED TO ABOUT BUTTON
     @FXML 
     private void launchAbout(ActionEvent event){
-        try {
-            FXMLLoader addPartLoader = new FXMLLoader(getClass().getResource(Paths.ABOUTFXML), activeLanguage);
-            Parent root = addPartLoader.load();
-            Stage newStage = new Stage(); 
-            
-            Scene scene = new Scene(root);
-            
-            newStage.setScene(scene);
-            newStage.getIcons().add(Paths.IMAGE_BIRD);
-            newStage.setTitle(Strings.AboutPageTitle);
-            newStage.show();
-        } catch (IOException ex) {
-            Logger.getLogger(MainPageController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        showStage(Paths.ABOUTFXML, Strings.AboutPageTitle);
     }
-
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        trackedDirectory = new File(Strings.FILE_DEFAULT_BROWSE_DIRECTORY);
-        directoryContents = new ArrayList<>();
-        targetFiles = new ArrayList<>();
-        
-        textField.setEditable(false);
-        
-        outputDisplayVBox.getStylesheets().clear();
-        outputDisplayVBox.getStylesheets().add(Strings.CSS_FILE_PATH);
-        outputDisplayVBox.getStyleClass().clear();
-        outputDisplayVBox.getStyleClass().add(Strings.FILE_DISPLAY_VBOX_CSS);
-        
         propertyPackage = getProperties();
-        
-        activeLanguage = Paths.ENG_BUNDLE;
-        buildSupportedLanguages();
-    }    
-
+        initializeVariables();
+        initializeFormatting();
+        initializeSupportedLanguages();
+    }
+    
     private PropertyPackage getProperties(){
         PropertyManager propManager = new PropertyManager(Paths.CLIENT_PROPERTIES);
         propManager.readProperties();
@@ -177,29 +133,23 @@ public class MainPageController implements Initializable {
         return returnPackage;
     }
 
-    private void buildSupportedLanguages() {
+    private void initializeVariables(){
+        trackedDirectory = new File(Strings.FILE_DEFAULT_BROWSE_DIRECTORY);
+        directoryContents = new ArrayList<>();
+        targetFiles = new ArrayList<>();
+    }
+    
+    public void initializeFormatting(){
+        textField.setEditable(false);
+        outputDisplayVBox.getStylesheets().clear();
+        outputDisplayVBox.getStylesheets().add(Strings.CSS_FILE_PATH);
+        outputDisplayVBox.getStyleClass().clear();
+        outputDisplayVBox.getStyleClass().add(Strings.FILE_DISPLAY_VBOX_CSS);
+    }
+
+    private void initializeSupportedLanguages() {
         for(SupportedLanguage lang : Paths.SUPPORTED_LANGUAGES){
-            MenuItem newItem = new MenuItem(lang.getNAME());
-            
-            newItem.setOnAction((event) -> {
-                activeLanguage = lang.getBUNDLE();
-                System.out.println("NEW AL: " + activeLanguage.toString() + " AKA " + lang.getNAME());
-                try {
-                    FXMLLoader newLanguageLoader = new FXMLLoader(getClass().getResource(Paths.MAINFXML), lang.getBUNDLE());
-                    
-                    Parent root = newLanguageLoader.load();
-                    
-                    MainPageController newMainController = newLanguageLoader.<MainPageController>getController();
-                    //PASS NEW LANGUAGE TO NEW VERSION OF MAIN MENU CONTROLLER PRIOR TO SHOW
-                    newMainController.setLanguage(activeLanguage);
-                    
-                    Scene scene = mainPane.getScene();
-                    scene.setRoot(root);
-                } catch (IOException ex) {
-                    Logger.getLogger(MainPageController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            });
-            mainLangMenu.getItems().add(newItem);
+            mainLangMenu.getItems().add(lang.getMenuItem(Paths.MAINFXML, mainPane));
         }
     }
     

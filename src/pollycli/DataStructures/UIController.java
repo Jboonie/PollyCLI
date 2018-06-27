@@ -23,48 +23,51 @@
  */
 package pollycli.DataStructures;
 
-import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import pollycli.StaticData.Strings;
+import java.io.IOException;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import pollycli.StaticData.Paths;
 
 /**
  *
  * @author Jacob Boone
  */
-public class FileDisplayItem extends HBox{
-    
-    private Label label;
-    private boolean isComplete = false;
+public class UIController {
 
-    public FileDisplayItem(String data) {
-        super();
-        label = new Label(data);
-        applyStyles();
+    public ResourceBundle activeLanguage;
+    
+    public UIController() {
+        activeLanguage = Paths.ENG_BUNDLE;
     }
     
-    private void applyStyles(){
-        this.getStylesheets().clear();
-        this.getStylesheets().add(Strings.CSS_FILE_PATH);
-        this.getStyleClass().add(Strings.FILE_DISPLAY_ITEM_UNPROCESSED_CSS);
-        this.getChildren().add(label);
+    public void showStage(String path, String title){
+        getStage(getScene(path), title).show();
     }
     
-    public void toggleStatus(){
-        if(isComplete){
-            setStyleClass(Strings.FILE_DISPLAY_ITEM_UNPROCESSED_CSS);
+    private Scene getScene(String path){
+        return new Scene(getParent(path));
+    }
+    
+    private Parent getParent(String path){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(path), activeLanguage);
+            return loader.load();
+        } catch (IOException ex) {
+            Logger.getLogger(UIController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        else{
-            setStyleClass(Strings.FILE_DISPLAY_ITEM_PROCESSED_CSS);
-        }
-        isComplete = !isComplete;
+        return (Parent) new Object();
     }
     
-    private void setStyleClass(String styleClass){
-        this.getStyleClass().clear();
-        this.getStyleClass().add(styleClass);
+    private Stage getStage(Scene scene, String title){
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.getIcons().add(Paths.IMAGE_BIRD);
+        stage.setTitle(title);
+        return stage;
     }
-
-    public boolean isComplete(){
-        return isComplete;
-    }  
 }

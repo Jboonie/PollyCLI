@@ -23,17 +23,24 @@
  */
 package pollycli.Logic;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ProgressBar;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import pollycli.DataStructures.FileStatusTracker;
 import pollycli.DataStructures.PollyStatement;
 import pollycli.DataStructures.PropertyPackage;
 import pollycli.StaticData.Paths;
-import pollycli.StaticData.Strings;
 
 /**
  *
@@ -45,6 +52,9 @@ public class PollyStatementThread extends Thread{
     private PropertyPackage propertyPackage;
     private ArrayList<FileStatusTracker> targetFiles;
     private ProgressBar progressBar;
+    private static final int characterLimit = 3000;
+    private static final int processLimit = 60;
+    public static final int threadSleepTime = 2000;
     
     public PollyStatementThread(ArrayList<File> contents, ArrayList<FileStatusTracker> fileDisplay, ProgressBar progressBar) {
         targetFiles = fileDisplay;
@@ -54,68 +64,109 @@ public class PollyStatementThread extends Thread{
         start();
     }
     
-    public void run(){
-        progressBar.setVisible(true);
-        progressBar.setProgress(0);
-        PollyStatement statement = new PollyStatement();
-        if(statement.loadPack(propertyPackage)){
-            if(directoryContents.size() > 0){
-                for(int i = 0; i < directoryContents.size(); i++){
-                    try{
-                        String textPortion = readFile(directoryContents.get(i).toString());
-                        String runString = statement.getStatement(textPortion, directoryContents.get(i));
-                        Runtime.getRuntime().exec(runString);   
-                        updateUIRepresentation(directoryContents.get(i));
-                        System.out.println(runString);
-                        progressBar.setProgress((double) i / (double) directoryContents.size());
-                        if(i != 0){
-                            if((i % 60) == 0){
-//                            System.out.println("Sleeping: " + i + " % 60 is " + (i % 60));
-                            Thread.sleep(2000);
-                            }
-                        }
-                    }
-                    catch(Exception e){
-                        System.out.println("Broke!");
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-        progressBar.setVisible(false);
-    }
-    
-    private String readFile(String fileName) throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader(fileName));
-        try {
-            StringBuilder sb = new StringBuilder();
-            String line = br.readLine();
-
-            while (line != null) {
-                sb.append(line);
-                sb.append(Strings.NEW_LINE);
-                line = br.readLine();
-            }
-            return sb.toString();
-        } finally {
-            br.close();
-        }
-    }
-    
     private PropertyPackage getProperties(){
         PropertyManager propManager = new PropertyManager(Paths.CLIENT_PROPERTIES);
         propManager.readProperties();
         PropertyPackage returnPackage = propManager.getProperties();
         return returnPackage;
     }
-
-    private void updateUIRepresentation(File get) {
-        for(int i = 0; i < targetFiles.size(); i++)
-        {
-            if(targetFiles.get(i).getFile().equals(get)){
-                targetFiles.get(i).getFileDisplayItem().toggleStatus();
-            }
+    
+    public void run(){
+        progressBarVisible(true);
+        buildStatement();
+        progressBarVisible(false);
+    }
+    
+    private void progressBarVisible(boolean visible) {
+        progressBar.setVisible(visible);
+        progressBar.setProgress(0);
+    }
+    
+    private void buildStatement(){
+        PollyStatement statement = new PollyStatement();
+        if(canExecuteStatement(statement)){
+            statement.loadPack(propertyPackage);
+            IntStream stream = IntStream.range(0, directoryContents.size());
+            stream.forEach(i -> executeStatement(i, statement));
         }
     }
     
+    private boolean canExecuteStatement(PollyStatement statement){
+        if(directoryContents.size() > 0){
+            if(statement.packLoadedSuccessfully(propertyPackage)){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private void executeStatement(int i, PollyStatement statement){
+        try {
+                Runtime.getRuntime().exec(buildExecutableString(statement, directoryContents.get(i)));
+                updateUI(directoryContents.get(i));
+                progressBar.setProgress((double) i / (double) directoryContents.size());
+                pauseThread(i);
+            } catch (Exception ex) {
+                Logger.getLogger(PollyStatementThread.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }
+    
+    private String buildExecutableString(PollyStatement statement, File file){
+        try{
+            String text = readFile(file.toString());
+            if(text.length() < characterLimit){
+                return statement.getStatement(text, file);
+            }
+            else{
+                Platform.runLater(() -> {
+                    generateLengthAlert(file.getName(), text.length());
+                });
+                return statement.getStatement("Character Limit Reached on file " + file.getName(), file);
+            }
+        } catch(Exception ex){
+            Logger.getLogger(PollyStatementThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "";
+    }
+    
+    private String readFile(String fileName) throws IOException {
+        try {
+            StringBuilder returnString = new StringBuilder();
+            Stream<String> stream = Files.lines(java.nio.file.Paths.get(fileName));
+            stream.forEach(str -> returnString.append(str));
+            return returnString.toString();
+        } catch(Exception ex){
+            Logger.getLogger(PollyStatementThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "";
+    }
+    
+    private void updateUI(File file) {
+        IntStream range = IntStream.range(0, targetFiles.size());
+        range.filter(i -> targetFiles.get(i).getFile().equals(file))
+             .forEach(i -> targetFiles.get(i).getFileDisplayItem().toggleStatus());
+    }
+    
+    private void pauseThread(int i){
+        try{
+            if((i > 0) && (i % processLimit == 0)){
+                Thread.sleep(threadSleepTime);
+            }
+        }catch(Exception ex){
+            Logger.getLogger(PollyStatementThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void generateLengthAlert(String filename, int size){
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.initStyle(StageStyle.UTILITY);
+        alert.setTitle("File Exceeds Character Length");
+        alert.setHeaderText(filename);
+        alert.setContentText("Your file exeeds Amazon's allowed request size."
+                + "\nAmazon allows " + characterLimit + " characters in each request. This request is " + size + " characters."
+                + "\nPlease shorten your file length and try again!"
+                + "\nFor more information: https://docs.aws.amazon.com/polly/latest/dg/limits.html"
+                + "\nA Placeholder file has still been generated");
+        alert.showAndWait();
+    }
 }

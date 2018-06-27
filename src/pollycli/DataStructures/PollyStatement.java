@@ -72,7 +72,6 @@ public class PollyStatement {
         
         returnValue += Strings.SETTINGS_STATEMENT_PART06_CONTENTS;
 
-//        System.out.println("PollySatatement: " + returnValue);
         return returnValue;
     }
     
@@ -82,13 +81,15 @@ public class PollyStatement {
         return returnVal;
     }
     
-    public boolean loadPack(PropertyPackage newPack){
+    public void loadPack(PropertyPackage newPack){
         this.pack = new PropertyPackage();
-        boolean returnVal = isVerified(trackedStatements, newPack);
-        if(returnVal){
+        if(isVerified(trackedStatements, newPack)){
             buildPack(newPack);
         }
-        return returnVal;
+    }
+    
+    public boolean packLoadedSuccessfully(PropertyPackage pack){
+        return isVerified(trackedStatements, pack);
     }
     
     //Populates internal package with appropriate data from the Strings class
