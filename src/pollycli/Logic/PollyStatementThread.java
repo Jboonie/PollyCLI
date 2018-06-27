@@ -31,7 +31,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ProgressBar;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import pollycli.DataStructures.FileStatusTracker;
 import pollycli.DataStructures.PollyStatement;
 import pollycli.DataStructures.PropertyPackage;
@@ -47,6 +52,7 @@ public class PollyStatementThread extends Thread{
     private PropertyPackage propertyPackage;
     private ArrayList<FileStatusTracker> targetFiles;
     private ProgressBar progressBar;
+    private static final int characterLimit = 3000;
     private static final int processLimit = 60;
     public static final int threadSleepTime = 2000;
     
@@ -108,7 +114,15 @@ public class PollyStatementThread extends Thread{
     private String buildExecutableString(PollyStatement statement, File file){
         try{
             String text = readFile(file.toString());
-            return statement.getStatement(text, file);
+            if(text.length() < characterLimit){
+                return statement.getStatement(text, file);
+            }
+            else{
+                Platform.runLater(() -> {
+                    generateLengthAlert(file.getName(), text.length());
+                });
+                return statement.getStatement("Character Limit Reached on file " + file.getName(), file);
+            }
         } catch(Exception ex){
             Logger.getLogger(PollyStatementThread.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -141,5 +155,18 @@ public class PollyStatementThread extends Thread{
         }catch(Exception ex){
             Logger.getLogger(PollyStatementThread.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    private void generateLengthAlert(String filename, int size){
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.initStyle(StageStyle.UTILITY);
+        alert.setTitle("File Exceeds Character Length");
+        alert.setHeaderText(filename);
+        alert.setContentText("Your file exeeds Amazon's allowed request size."
+                + "\nAmazon allows " + characterLimit + " characters in each request. This request is " + size + " characters."
+                + "\nPlease shorten your file length and try again!"
+                + "\nFor more information: https://docs.aws.amazon.com/polly/latest/dg/limits.html"
+                + "\nA Placeholder file has still been generated");
+        alert.showAndWait();
     }
 }

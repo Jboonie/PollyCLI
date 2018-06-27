@@ -72,7 +72,6 @@ public class PollyStatement {
         
         returnValue += Strings.SETTINGS_STATEMENT_PART06_CONTENTS;
 
-//        System.out.println("PollySatatement: " + returnValue);
         return returnValue;
     }
     
