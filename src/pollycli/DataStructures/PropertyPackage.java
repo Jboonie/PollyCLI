@@ -45,6 +45,10 @@ public class PropertyPackage {
         }
     }
     
+    public void update(PropertyPair pair){
+        setByTarget(pair);
+    }
+    
     public void remove(PropertyPair pair){
         if(properties.contains(pair)){
             properties.remove(pair);
@@ -83,6 +87,26 @@ public class PropertyPackage {
             }
         }
         return false;
+    }
+    
+    public boolean contains(PropertyPair newPair){
+        for(PropertyPair oldPair : properties){
+            if(dataAndTargetMatch(oldPair, newPair))
+                return true;
+        }
+        return false;
+    }
+    
+    private boolean dataAndTargetMatch(PropertyPair pairA, PropertyPair pairB){
+        return dataIsEqual(pairA, pairB) && targetIsEqual(pairA, pairB);
+    }
+    
+    private boolean dataIsEqual(PropertyPair pairA, PropertyPair pairB){
+        return pairA.getData().equals(pairB.getData());
+    }
+    
+    private boolean targetIsEqual(PropertyPair pairA, PropertyPair pairB){
+        return pairA.getTarget().equals(pairB.getTarget());
     }
     
     public PropertyPair getByTarget(String str){

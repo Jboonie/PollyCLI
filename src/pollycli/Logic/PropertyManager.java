@@ -62,10 +62,8 @@ public class PropertyManager {
             
             while(enumeration.hasMoreElements()){
                 String key = (String) enumeration.nextElement();
-                //System.out.println("ENUM: " + enumeration.toString());
                 String value = tempProperties.getProperty(key);
                 properties.add(new PropertyPair(key.trim(), value));
-                //System.out.println("TO PROPERTIES: " + key + " " + value);
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(PropertyManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -75,19 +73,11 @@ public class PropertyManager {
     }
     
     public void writeProperties(){
-        //readProperties();
         try{
            Properties tempProperties = new Properties();
 
             for(int i = 0; i < properties.size(); i++){
                 tempProperties.setProperty(properties.get(i).getTarget(), properties.get(i).getData());
-//                System.out.println("");
-//                System.out.println("");
-//                System.out.println("/////////");
-//                System.out.println(properties.get(i).getTarget() + " " + properties.get(i).getData());
-//                System.out.println("/////////");
-//                System.out.println("");
-//                System.out.println("");
             }
 
             propertiesFile.delete();
@@ -102,18 +92,17 @@ public class PropertyManager {
     }
     
     public void addProperty(PropertyPair pair){
-//        System.out.println("RECEIVED PAID: " + pair.getTarget() + " " + pair.getData());
-        boolean isNew = true;
-        for(int i = 0; i < properties.size(); i++){
-            if(properties.get(i).getTarget().equals(pair.getTarget())){
-                properties.set(i, pair);
-                isNew = false;
-//                System.out.println("SAVED AS: " + properties.get(i).getData());
-            }
-        }
-        if(isNew){
+        if(!propertiesContain(pair)){
             properties.add(pair);
         }
+    }
+    
+    private boolean propertiesContain(PropertyPair pair){
+        if(properties.contains(pair)){
+            properties.update(pair);
+            return true;
+        }
+        return false;
     }
     
     public void setPackage(PropertyPackage newPack){

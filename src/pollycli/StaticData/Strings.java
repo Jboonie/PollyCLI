@@ -33,7 +33,7 @@ import java.util.Arrays;
  */
 public class Strings {
 
-    private static final String VERSION = "0.2.1.1";
+    private static final String VERSION = "0.2.2";
     private static final String APPNAME = "PollyCLI";
     private static final String TITLEBAR = APPNAME + " " + VERSION;
     public static final String MainPageTitle = TITLEBAR;
