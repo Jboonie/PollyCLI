@@ -52,24 +52,31 @@ public class PropertyManager {
     }
 
     public void readProperties() {
-        try {
-            Properties tempProperties = new Properties();
+        Properties incommingProperties = loadPropertiesFromFile();
+        insertIntoThisPropertyPackage(incommingProperties);  
+    }
+    
+    private void insertIntoThisPropertyPackage(Properties newProperties){
+        Enumeration enumeration = newProperties.keys();
+        
+        while(enumeration.hasMoreElements()){
+            String key = (String) enumeration.nextElement();
+            String value = newProperties.getProperty(key);
+            properties.add(new PropertyPair(key.trim(), value));
+        }
+    }
+    
+    private Properties loadPropertiesFromFile(){
+        try{
+            Properties newProperties = new Properties();
             InputStream inputStream = new FileInputStream(propertiesFile);
-            tempProperties.load(inputStream);
+            newProperties.load(new FileInputStream(propertiesFile));
             inputStream.close();
- 
-            Enumeration enumeration = tempProperties.keys();
-            
-            while(enumeration.hasMoreElements()){
-                String key = (String) enumeration.nextElement();
-                String value = tempProperties.getProperty(key);
-                properties.add(new PropertyPair(key.trim(), value));
-            }
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(PropertyManager.class.getName()).log(Level.SEVERE, null, ex);
+            return newProperties;
         } catch (IOException ex) {
             Logger.getLogger(PropertyManager.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return new Properties();
     }
     
     public void writeProperties(){
@@ -92,17 +99,12 @@ public class PropertyManager {
     }
     
     public void addProperty(PropertyPair pair){
-        if(!propertiesContain(pair)){
-            properties.add(pair);
-        }
-    }
-    
-    private boolean propertiesContain(PropertyPair pair){
         if(properties.contains(pair)){
             properties.update(pair);
-            return true;
         }
-        return false;
+        else{
+            properties.add(pair);
+        }
     }
     
     public void setPackage(PropertyPackage newPack){
